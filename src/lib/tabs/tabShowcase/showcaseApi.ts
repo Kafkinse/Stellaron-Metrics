@@ -14,10 +14,11 @@ import {
 import { ShowcaseScreen } from 'lib/tabs/tabShowcase/showcaseTabTypes'
 import { useShowcaseTabStore } from 'lib/tabs/tabShowcase/useShowcaseTabStore'
 
-// Self-hosted: fetch through a same-origin nginx proxy to Enka.Network. The
-// upstream Fribbels backend is CORS-locked to their own site, so a self-hosted
-// origin can't call it directly.
-const API_ENDPOINT = '/api/enka'
+// Self-hosted: fetch through a same-origin nginx proxy. The upstream backend is
+// CORS-locked to its own site, so a self-hosted origin can't call it directly;
+// nginx forwards /api/profile/<id> to it server-side (no CORS), returning the
+// exact response shape the processors expect.
+const API_ENDPOINT = '/api/profile'
 
 const THROTTLE_SECONDS = 10
 
