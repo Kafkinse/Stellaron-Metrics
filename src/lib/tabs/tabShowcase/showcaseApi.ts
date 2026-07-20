@@ -118,10 +118,10 @@ export function submitForm(form: ShowcaseTabForm, options?: { skipCooldown?: boo
       }
     })
     .catch((error) => {
-      setTimeout(() => {
-        Message.warning(t('LookupError') /* Error during lookup, please try again in a bit */)
-        console.error('Fetch error:', error)
-        handleFetchFailure()
-      }, 1000 * 5)
+      // Surface the underlying cause so self-hosting issues are diagnosable.
+      const detail = error instanceof Error ? `${error.name}: ${error.message}` : String(error)
+      Message.warning(`Lookup failed — ${detail}`)
+      console.error('Fetch error:', error)
+      handleFetchFailure()
     })
 }
