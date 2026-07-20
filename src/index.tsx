@@ -1,3 +1,4 @@
+import 'lib/polyfills'
 import { App } from 'App'
 import 'lib/i18n/i18n'
 import { Constants } from 'lib/constants/constants'
