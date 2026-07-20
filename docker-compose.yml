@@ -4,6 +4,7 @@ services:
     image: stellaron-metrics
     container_name: stellaron-metrics
     ports:
-      # host:container. Map a NEW public port to inner 8071 in your provider NAT.
-      - "8071:80"
+      # host:container. Reuses the freed NAT mapping public 10036 -> inner 8070,
+      # so the site opens at http://163.123.180.81:10036/
+      - "8070:80"
     restart: unless-stopped
