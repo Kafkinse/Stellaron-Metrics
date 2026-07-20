@@ -14,7 +14,10 @@ import {
 import { ShowcaseScreen } from 'lib/tabs/tabShowcase/showcaseTabTypes'
 import { useShowcaseTabStore } from 'lib/tabs/tabShowcase/useShowcaseTabStore'
 
-const API_ENDPOINT = 'https://9di5b7zvtb.execute-api.us-west-2.amazonaws.com/prod'
+// Self-hosted: fetch through a same-origin nginx proxy to Enka.Network. The
+// upstream Fribbels backend is CORS-locked to their own site, so a self-hosted
+// origin can't call it directly.
+const API_ENDPOINT = '/api/enka'
 
 const THROTTLE_SECONDS = 10
 
@@ -63,12 +66,17 @@ export function submitForm(form: ShowcaseTabForm, options?: { skipCooldown?: boo
 
   setHashParams([['id', id]])
 
-  void fetch(`${API_ENDPOINT}/profile/${id}`, { method: 'GET' })
+  void fetch(`${API_ENDPOINT}/${id}`, { method: 'GET' })
     .then((response) => {
       if (!response.ok) throw new Error(`HTTP Error! Status: ${response.status}`)
       return response.json() as Promise<APIResponse>
     })
     .then((data) => {
+      // The proxy returns raw Enka data without a `source` tag; add the one the
+      // processors branch on.
+      if (!data.source && (data as { detailInfo?: unknown }).detailInfo) {
+        data.source = 'enka'
+      }
       let characters: UnconvertedCharacter[]
       // backup
       if (data.source === 'mihomo') {
