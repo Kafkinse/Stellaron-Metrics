@@ -2,7 +2,8 @@ import chroma from 'chroma-js'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-const DEFAULT_SEED = '#1668DC'
+// Veritas theme: purple seed drives the accent, dark surfaces and layers.
+const DEFAULT_SEED = '#B9A2FF'
 
 function isValidColor(color: string): boolean {
   try {

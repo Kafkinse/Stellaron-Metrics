@@ -37,9 +37,9 @@
   --radius-sm: 4px;
   --radius-md: 6px;
 
-  /* Fixed accent colors (not seed-derived) */
-  --color-link: #91bfff;
-  --color-accent: #799ef4;
+  /* Fixed accent colors (not seed-derived) — Veritas palette */
+  --color-link: #7fb4ff;
+  --color-accent: #b9a2ff;
 
   /* Rarity card gradients */
   --rarity-5-start: #8A6700;

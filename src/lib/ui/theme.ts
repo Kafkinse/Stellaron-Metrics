@@ -10,7 +10,7 @@ import {
   derivePrimaryPalette,
 } from 'lib/ui/themeColors'
 
-const DEFAULT_SEED = '#1668DC'
+const DEFAULT_SEED = '#B9A2FF'
 
 // Caps dropdown scroll containers to available viewport space to prevent overflow off-screen
 const comboboxMiddlewares = {

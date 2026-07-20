@@ -28,7 +28,9 @@ function serveLeaderboardJson(): Plugin {
 }
 
 export default defineConfig({
-  base: '/hsr-optimizer',
+  // Set VITE_BASE=/ when self-hosting at the domain root (Docker); the
+  // GitHub Pages default keeps the sub-path.
+  base: process.env.VITE_BASE ?? '/hsr-optimizer',
   plugins: [
     serveLeaderboardJson(),
     react(),

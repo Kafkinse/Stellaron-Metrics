@@ -1,0 +1,9 @@
+services:
+  stellaron-metrics:
+    build: .
+    image: stellaron-metrics
+    container_name: stellaron-metrics
+    ports:
+      # host:container. Map a NEW public port to inner 8071 in your provider NAT.
+      - "8071:80"
+    restart: unless-stopped
