@@ -10,8 +10,10 @@ export enum BasePath {
   BETA = '/dreary-quibbles',
 }
 
-// This string is replaced by BasePath.BETA by github actions, don't change
-export const BASE_PATH: BasePath = BasePath.MAIN
+// Derive the runtime asset/locale prefix from the Vite build base, so images
+// and translations resolve wherever the app is hosted: root ('') when built
+// with VITE_BASE=/ for self-hosting, or the GitHub Pages sub-path otherwise.
+export const BASE_PATH: string = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 export type PageHash =
   | ''
