@@ -16,7 +16,7 @@ export function CtaCards() {
         <IconBrandGithub size={26} color='#f0f0f0' />
         <span className={classes.cardLabel}>Star on GitHub</span>
       </a>
-      <a className={`${classes.card} ${classes.cardKofi}`} href='https://ko-fi.com/fribbels' target='_blank' rel='noreferrer'>
+      <a className={`${classes.card} ${classes.cardKofi}`} href='https://ko-fi.com/kafkinse' target='_blank' rel='noreferrer'>
         <IconCoffee size={26} color='#FF5E5B' />
         <span className={classes.cardLabel}>Support on Ko-fi</span>
       </a>

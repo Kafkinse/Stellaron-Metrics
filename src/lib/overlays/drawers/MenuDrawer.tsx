@@ -291,7 +291,7 @@ export function MenuDrawer({ collapsed }: { collapsed: boolean }) {
       items: [
         { key: AppPages.HOME, label: t('Links.Home'), icon: <IconHome size={16} /> },
         { key: AppPages.CHANGELOG, label: t('Links.Changelog'), icon: <IconList size={16} /> },
-        { key: 'link donate', label: t('Links.Kofi'), icon: <CoffeeIcon />, href: 'https://ko-fi.com/fribbels' },
+        { key: 'link donate', label: t('Links.Kofi'), icon: <CoffeeIcon />, href: 'https://ko-fi.com/kafkinse' },
         { key: 'link discord', label: t('Links.Discord'), icon: <DiscordIcon />, href: 'https://discord.gg/rDmB4Un7qg' },
         { key: 'link github', label: t('Links.Github'), icon: <GithubIcon />, href: 'https://github.com/fribbels/hsr-optimizer' },
         officialOnly
