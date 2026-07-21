@@ -43,6 +43,10 @@ import { useShallow } from 'zustand/react/shallow'
 
 const MetadataTab = lazy(() => import('lib/tabs/tabMetadata/MetadataTab').then((m) => ({ default: m.MetadataTab })))
 const WebgpuTab = lazy(() => import('lib/tabs/tabWebgpu/WebgpuTab').then((m) => ({ default: m.WebgpuTab })))
+// Database tabs are lazy so the bundled lore JSON stays out of the main chunk.
+const DatabaseCharactersTab = lazy(() => import('lib/tabs/tabDatabase/DatabaseCharactersTab').then((m) => ({ default: m.DatabaseCharactersTab })))
+const DatabaseLightConesTab = lazy(() => import('lib/tabs/tabDatabase/DatabaseLightConesTab').then((m) => ({ default: m.DatabaseLightConesTab })))
+const DatabaseRelicsTab = lazy(() => import('lib/tabs/tabDatabase/DatabaseRelicsTab').then((m) => ({ default: m.DatabaseRelicsTab })))
 
 const defaultErrorRender = ({ error }: FallbackProps) => <div>Something went wrong: {error instanceof Error ? error.message : String(error)}</div>
 
@@ -58,6 +62,9 @@ const TAB_COMPONENTS: [AppPages, React.ComponentType][] = [
   [AppPages.CALCULATORS, CalculatorsTab],
   [AppPages.LEADERBOARD, LeaderboardTab],
   [AppPages.CHANGELOG, ChangelogTab],
+  [AppPages.DATABASE_CHARACTERS, DatabaseCharactersTab],
+  [AppPages.DATABASE_LIGHTCONES, DatabaseLightConesTab],
+  [AppPages.DATABASE_RELICS, DatabaseRelicsTab],
   [AppPages.WEBGPU_TEST, WebgpuTab],
   [AppPages.METADATA_TEST, MetadataTab],
 ]

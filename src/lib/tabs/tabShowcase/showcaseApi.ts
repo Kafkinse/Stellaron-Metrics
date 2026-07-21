@@ -75,8 +75,9 @@ export function submitForm(form: ShowcaseTabForm, options?: { skipCooldown?: boo
     .then((data) => {
       // The proxy returns raw Enka data without a `source` tag; add the one the
       // processors branch on.
-      if (!data.source && (data as { detailInfo?: unknown }).detailInfo) {
-        data.source = 'enka'
+      const raw = data as { source?: string, detailInfo?: unknown }
+      if (!raw.source && raw.detailInfo) {
+        raw.source = 'enka'
       }
       let characters: UnconvertedCharacter[]
       // backup

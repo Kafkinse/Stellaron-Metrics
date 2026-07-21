@@ -10,16 +10,19 @@ import {
   IconCalculator,
   IconChartRadar,
   IconDiamond,
+  IconDiamonds,
   IconHome,
   IconLayoutGrid,
   IconLink,
   IconList,
   IconSettings,
   IconStarFilled,
+  IconSword,
   IconTrendingUp,
   IconTrophy,
   IconUpload,
   IconUser,
+  IconUsers,
 } from '@tabler/icons-react'
 import { CoffeeIcon } from 'icons/CoffeeIcon'
 import { DiscordIcon } from 'icons/DiscordIcon'
@@ -284,6 +287,14 @@ export function MenuDrawer({ collapsed }: { collapsed: boolean }) {
           icon: <IconBook size={16} />,
           onClick: () => setOpen(OpenCloseIDs.GETTING_STARTED_DRAWER),
         },
+      ],
+    },
+    {
+      label: 'Database',
+      items: [
+        { key: AppPages.DATABASE_CHARACTERS, label: 'Characters', icon: <IconUsers size={16} /> },
+        { key: AppPages.DATABASE_LIGHTCONES, label: 'Light Cones', icon: <IconSword size={16} /> },
+        { key: AppPages.DATABASE_RELICS, label: 'Relics', icon: <IconDiamonds size={16} /> },
       ],
     },
     {

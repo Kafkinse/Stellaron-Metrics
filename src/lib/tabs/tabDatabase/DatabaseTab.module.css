@@ -1,0 +1,240 @@
+.root {
+  width: 100%;
+  max-width: 1300px;
+  padding: 8px 0 32px;
+}
+
+.pageTitle {
+  color: var(--text-primary);
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.listPane {
+  flex: 1;
+  min-width: 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.filterLabel {
+  color: var(--text-tertiary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 4px;
+  background: var(--layer-1);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-secondary);
+  font: inherit;
+  text-align: center;
+  transition: border-color 0.1s ease, background 0.1s ease;
+}
+
+.card:hover {
+  border-color: var(--primary-hover);
+}
+
+.cardActive {
+  border-color: var(--primary-default);
+  background: var(--primary-light-alpha, var(--layer-2));
+  color: var(--text-primary);
+}
+
+.cardIcon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  background: var(--layer-inset);
+}
+
+.cardName {
+  font-size: 11px;
+  line-height: 1.25;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.rarity5 { color: var(--rarity-5-end); }
+.rarity4 { color: var(--rarity-4-end); }
+.rarity3 { color: var(--rarity-3-end); }
+
+.detailPane {
+  width: 440px;
+  flex-shrink: 0;
+  background: var(--layer-1);
+  border: var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  position: sticky;
+  top: 12px;
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+}
+
+.detailHeader {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.detailPortrait {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  background: var(--layer-inset);
+}
+
+.detailName {
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.detailMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.metaIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.statsTable {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 10px 0 4px;
+}
+
+.statCell {
+  background: var(--layer-inset);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+}
+
+.statLabel {
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+
+.statValue {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sectionTitle {
+  color: var(--text-tertiary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 16px 0 8px;
+}
+
+.entryBlock {
+  padding: 8px 10px;
+  background: var(--layer-inset);
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+}
+
+.entryTag {
+  color: var(--primary-light);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.entryName {
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  margin: 2px 0 4px;
+}
+
+.entryDesc {
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.placeholder {
+  color: var(--text-tertiary);
+  font-size: 12.5px;
+  font-style: italic;
+}
+
+.partsRow {
+  display: flex;
+  gap: 10px;
+  margin: 8px 0 4px;
+}
+
+.partIcon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  background: var(--layer-inset);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+}
+
+.empty {
+  color: var(--text-tertiary);
+  padding: 24px 0;
+  text-align: center;
+}
+
+@media (max-width: 1000px) {
+  .layout {
+    flex-direction: column-reverse;
+  }
+  .detailPane {
+    width: 100%;
+    position: static;
+    max-height: none;
+  }
+}
