@@ -3,7 +3,10 @@ import {
   Group,
   TextInput,
 } from '@mantine/core'
-import { IconSearch } from '@tabler/icons-react'
+import {
+  IconArrowLeft,
+  IconSearch,
+} from '@tabler/icons-react'
 import {
   Parts,
   type Sets,
@@ -60,6 +63,7 @@ export function DatabaseRelicsTab() {
   const [search, setSearch] = useState('')
   const [kind, setKind] = useState('')
   const [selectedId, setSelectedId] = useState(() => entries[0]?.ingameId ?? '')
+  const [detailOpened, setDetailOpened] = useState(false)
 
   const filtered = useMemo(() => entries.filter((e) => {
     if (search && !e.name.toLowerCase().includes(search.toLowerCase())) return false
@@ -72,7 +76,7 @@ export function DatabaseRelicsTab() {
   return (
     <div className={styles.root}>
       <h2 className={styles.pageTitle}>Relic Database</h2>
-      <div className={styles.layout}>
+      <div className={`${styles.layout} ${detailOpened ? styles.detailOpened : ''}`}>
         <div className={styles.listPane}>
           <div className={styles.filters}>
             <TextInput
@@ -98,7 +102,10 @@ export function DatabaseRelicsTab() {
                   <button
                     key={entry.ingameId}
                     className={`${styles.card} ${entry.ingameId === selected?.ingameId ? styles.cardActive : ''}`}
-                    onClick={() => setSelectedId(entry.ingameId)}
+                    onClick={() => {
+                      setSelectedId(entry.ingameId)
+                      setDetailOpened(true)
+                    }}
                   >
                     <img src={Assets.getSetImage(entry.set, Parts.Head, true)} className={styles.cardIcon} loading='lazy' />
                     <span className={styles.cardName}>{entry.name}</span>
@@ -108,17 +115,22 @@ export function DatabaseRelicsTab() {
             )}
         </div>
 
-        {selected && <RelicSetDetails entry={selected} />}
+        {selected && <RelicSetDetails entry={selected} onBack={() => setDetailOpened(false)} />}
       </div>
     </div>
   )
 }
 
-function RelicSetDetails({ entry }: { entry: SetEntry }) {
+function RelicSetDetails({ entry, onBack }: { entry: SetEntry, onBack: () => void }) {
   const parts = entry.kind === 'cavern' ? CAVERN_PARTS : PLANAR_PARTS
 
   return (
     <div className={styles.detailPane}>
+      <button className={styles.backButton} onClick={onBack}>
+        <IconArrowLeft size={16} />
+        Back to list
+      </button>
+
       <div className={styles.detailHeader}>
         <img src={Assets.getSetImage(entry.set, Parts.Head, true)} className={styles.detailPortrait} />
         <div>

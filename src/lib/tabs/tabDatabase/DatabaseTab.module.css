@@ -228,13 +228,82 @@
   text-align: center;
 }
 
+.chipContent {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chipIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.backButton {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  background: var(--layer-inset);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.levelRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0 8px;
+}
+
+.levelLabel {
+  color: var(--text-tertiary);
+  font-size: 11.5px;
+  white-space: nowrap;
+  min-width: 52px;
+  font-variant-numeric: tabular-nums;
+}
+
+.levelSlider {
+  flex: 1;
+}
+
+.eidolonRow {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.eidolonIcon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
+  background: var(--layer-0);
+  border: 1px solid var(--border-default);
+}
+
 @media (max-width: 1000px) {
-  .layout {
-    flex-direction: column-reverse;
-  }
   .detailPane {
     width: 100%;
     position: static;
     max-height: none;
+  }
+  /* One pane at a time: list by default, details after opening a card. */
+  .layout:not(.detailOpened) .detailPane {
+    display: none;
+  }
+  .detailOpened .listPane {
+    display: none;
+  }
+  .backButton {
+    display: inline-flex;
   }
 }

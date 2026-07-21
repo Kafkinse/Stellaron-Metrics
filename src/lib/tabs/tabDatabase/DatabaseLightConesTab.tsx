@@ -3,7 +3,10 @@ import {
   Group,
   TextInput,
 } from '@mantine/core'
-import { IconSearch } from '@tabler/icons-react'
+import {
+  IconArrowLeft,
+  IconSearch,
+} from '@tabler/icons-react'
 import { Assets } from 'lib/rendering/assets'
 import { getGameMetadata } from 'lib/state/gameMetadata'
 import styles from 'lib/tabs/tabDatabase/DatabaseTab.module.css'
@@ -33,6 +36,7 @@ export function DatabaseLightConesTab() {
   const [search, setSearch] = useState('')
   const [path, setPath] = useState('')
   const [selectedId, setSelectedId] = useState(() => lightCones[0]?.id ?? '')
+  const [detailOpened, setDetailOpened] = useState(false)
 
   const filtered = useMemo(() => lightCones.filter((lc) => {
     if (search && !lc.name.toLowerCase().includes(search.toLowerCase())) return false
@@ -45,7 +49,7 @@ export function DatabaseLightConesTab() {
   return (
     <div className={styles.root}>
       <h2 className={styles.pageTitle}>Light Cone Database</h2>
-      <div className={styles.layout}>
+      <div className={`${styles.layout} ${detailOpened ? styles.detailOpened : ''}`}>
         <div className={styles.listPane}>
           <div className={styles.filters}>
             <TextInput
@@ -57,7 +61,14 @@ export function DatabaseLightConesTab() {
             />
             <Chip.Group multiple={false} value={path} onChange={(v) => setPath(v === path ? '' : (v ?? ''))}>
               <Group gap={4}>
-                {paths.map((p) => <Chip key={p} value={p} size='xs'>{p}</Chip>)}
+                {paths.map((p) => (
+                  <Chip key={p} value={p} size='xs'>
+                    <span className={styles.chipContent}>
+                      <img src={Assets.getPath(p)} className={styles.chipIcon} />
+                      {p}
+                    </span>
+                  </Chip>
+                ))}
               </Group>
             </Chip.Group>
           </div>
@@ -70,7 +81,10 @@ export function DatabaseLightConesTab() {
                   <button
                     key={lc.id}
                     className={`${styles.card} ${lc.id === selected?.id ? styles.cardActive : ''}`}
-                    onClick={() => setSelectedId(lc.id)}
+                    onClick={() => {
+                      setSelectedId(lc.id)
+                      setDetailOpened(true)
+                    }}
                   >
                     <img src={Assets.getLightConeIconById(lc.id)} className={styles.cardIcon} loading='lazy' />
                     <span className={styles.cardName}>
@@ -84,13 +98,13 @@ export function DatabaseLightConesTab() {
             )}
         </div>
 
-        {selected && <LightConeDetails id={selected.id} />}
+        {selected && <LightConeDetails id={selected.id} onBack={() => setDetailOpened(false)} />}
       </div>
     </div>
   )
 }
 
-function LightConeDetails({ id }: { id: LightConeId }) {
+function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void }) {
   const meta = getGameMetadata().lightCones[id]
   const lore = getLightConeLore(id)
   const [superimposition, setSuperimposition] = useState('1')
@@ -100,6 +114,11 @@ function LightConeDetails({ id }: { id: LightConeId }) {
 
   return (
     <div className={styles.detailPane}>
+      <button className={styles.backButton} onClick={onBack}>
+        <IconArrowLeft size={16} />
+        Back to list
+      </button>
+
       <div className={styles.detailHeader}>
         <img src={Assets.getLightConeIconById(id)} className={styles.detailPortrait} />
         <div>

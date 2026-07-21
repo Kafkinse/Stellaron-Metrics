@@ -1,15 +1,21 @@
 import {
   Chip,
   Group,
+  Slider,
   TextInput,
 } from '@mantine/core'
-import { IconSearch } from '@tabler/icons-react'
+import {
+  IconArrowLeft,
+  IconSearch,
+} from '@tabler/icons-react'
 import { Assets } from 'lib/rendering/assets'
 import { getGameMetadata } from 'lib/state/gameMetadata'
 import styles from 'lib/tabs/tabDatabase/DatabaseTab.module.css'
 import {
   ABILITY_SLOTS,
   getCharacterLore,
+  type LoreAbility,
+  renderAbilityDescription,
 } from 'lib/tabs/tabDatabase/databaseLore'
 import React, {
   useMemo,
@@ -53,6 +59,9 @@ export function DatabaseCharactersTab() {
   const [element, setElement] = useState('')
   const [path, setPath] = useState('')
   const [selectedId, setSelectedId] = useState(() => characters[0]?.id ?? '')
+  // On narrow screens only one pane is shown at a time; opening a character
+  // hides the list so the details page can be read comfortably.
+  const [detailOpened, setDetailOpened] = useState(false)
 
   const filtered = useMemo(() => characters.filter((c) => {
     if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false
@@ -66,7 +75,7 @@ export function DatabaseCharactersTab() {
   return (
     <div className={styles.root}>
       <h2 className={styles.pageTitle}>Character Database</h2>
-      <div className={styles.layout}>
+      <div className={`${styles.layout} ${detailOpened ? styles.detailOpened : ''}`}>
         <div className={styles.listPane}>
           <div className={styles.filters}>
             <TextInput
@@ -78,12 +87,26 @@ export function DatabaseCharactersTab() {
             />
             <Chip.Group multiple={false} value={element} onChange={(v) => setElement(v === element ? '' : (v ?? ''))}>
               <Group gap={4}>
-                {elements.map((e) => <Chip key={e} value={e} size='xs'>{e}</Chip>)}
+                {elements.map((e) => (
+                  <Chip key={e} value={e} size='xs'>
+                    <span className={styles.chipContent}>
+                      <img src={Assets.getElement(e)} className={styles.chipIcon} />
+                      {e}
+                    </span>
+                  </Chip>
+                ))}
               </Group>
             </Chip.Group>
             <Chip.Group multiple={false} value={path} onChange={(v) => setPath(v === path ? '' : (v ?? ''))}>
               <Group gap={4}>
-                {paths.map((p) => <Chip key={p} value={p} size='xs'>{p}</Chip>)}
+                {paths.map((p) => (
+                  <Chip key={p} value={p} size='xs'>
+                    <span className={styles.chipContent}>
+                      <img src={Assets.getPath(p)} className={styles.chipIcon} />
+                      {p}
+                    </span>
+                  </Chip>
+                ))}
               </Group>
             </Chip.Group>
           </div>
@@ -96,7 +119,10 @@ export function DatabaseCharactersTab() {
                   <button
                     key={c.id}
                     className={`${styles.card} ${c.id === selected?.id ? styles.cardActive : ''}`}
-                    onClick={() => setSelectedId(c.id)}
+                    onClick={() => {
+                      setSelectedId(c.id)
+                      setDetailOpened(true)
+                    }}
                   >
                     <img src={Assets.getCharacterAvatarById(c.id)} className={styles.cardIcon} loading='lazy' />
                     <span className={styles.cardName}>
@@ -110,18 +136,23 @@ export function DatabaseCharactersTab() {
             )}
         </div>
 
-        {selected && <CharacterDetails id={selected.id} />}
+        {selected && <CharacterDetails id={selected.id} onBack={() => setDetailOpened(false)} />}
       </div>
     </div>
   )
 }
 
-function CharacterDetails({ id }: { id: CharacterId }) {
+function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void }) {
   const meta = getGameMetadata().characters[id]
   const lore = getCharacterLore(id)
 
   return (
     <div className={styles.detailPane}>
+      <button className={styles.backButton} onClick={onBack}>
+        <IconArrowLeft size={16} />
+        Back to list
+      </button>
+
       <div className={styles.detailHeader}>
         <img src={Assets.getCharacterAvatarById(id)} className={styles.detailPortrait} />
         <div>
@@ -149,40 +180,66 @@ function CharacterDetails({ id }: { id: CharacterId }) {
       </div>
 
       <div className={styles.sectionTitle}>Abilities</div>
-      {ABILITY_SLOTS.map(({ key, label }) => {
-        const ability = lore?.abilities[key]
-        return (
-          <div key={key} className={styles.entryBlock}>
-            <div className={styles.entryTag}>{label}</div>
-            {ability?.name || ability?.description
-              ? (
-                <>
-                  <div className={styles.entryName}>{ability.name}</div>
-                  <p className={styles.entryDesc}>{ability.description}</p>
-                </>
-              )
-              : <div className={styles.placeholder}>Text not available yet</div>}
-          </div>
-        )
-      })}
+      {ABILITY_SLOTS.map(({ key, label }) => (
+        <AbilityBlock key={`${id}-${key}`} tag={label} ability={lore?.abilities[key]} />
+      ))}
       {lore?.extraAbilities?.map((ability, i) => (
-        <div key={i} className={styles.entryBlock}>
-          <div className={styles.entryTag}>{ability.type}</div>
-          <div className={styles.entryName}>{ability.name}</div>
-          <p className={styles.entryDesc}>{ability.description}</p>
-        </div>
+        <AbilityBlock key={`${id}-extra-${i}`} tag={ability.type} ability={ability} />
       ))}
 
       <div className={styles.sectionTitle}>Eidolons</div>
       {lore?.eidolons?.length
         ? lore.eidolons.map((eidolon) => (
-          <div key={eidolon.level} className={styles.entryBlock}>
-            <div className={styles.entryTag}>E{eidolon.level}</div>
-            <div className={styles.entryName}>{eidolon.name}</div>
-            <p className={styles.entryDesc}>{eidolon.description}</p>
+          <div key={eidolon.level} className={`${styles.entryBlock} ${styles.eidolonRow}`}>
+            <img
+              src={Assets.getCharacterRankImageById(id, eidolon.level)}
+              className={styles.eidolonIcon}
+              loading='lazy'
+            />
+            <div>
+              <div className={styles.entryTag}>E{eidolon.level}</div>
+              <div className={styles.entryName}>{eidolon.name}</div>
+              <p className={styles.entryDesc}>{eidolon.description}</p>
+            </div>
           </div>
         ))
         : <div className={styles.placeholder}>Text not available yet</div>}
+    </div>
+  )
+}
+
+function AbilityBlock({ tag, ability }: { tag: string, ability: LoreAbility | undefined }) {
+  const [level, setLevel] = useState(1)
+  const maxLevel = ability?.params.length ?? 0
+
+  if (!ability?.name && !ability?.template) {
+    return (
+      <div className={styles.entryBlock}>
+        <div className={styles.entryTag}>{tag}</div>
+        <div className={styles.placeholder}>Text not available yet</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className={styles.entryBlock}>
+      <div className={styles.entryTag}>{tag}</div>
+      <div className={styles.entryName}>{ability.name}</div>
+      {maxLevel > 1 && (
+        <div className={styles.levelRow}>
+          <span className={styles.levelLabel}>Lv. {level}/{maxLevel}</span>
+          <Slider
+            value={level}
+            onChange={setLevel}
+            min={1}
+            max={maxLevel}
+            step={1}
+            label={null}
+            className={styles.levelSlider}
+          />
+        </div>
+      )}
+      <p className={styles.entryDesc}>{renderAbilityDescription(ability, level)}</p>
     </div>
   )
 }

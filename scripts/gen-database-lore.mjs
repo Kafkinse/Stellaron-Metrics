@@ -61,13 +61,29 @@ const TYPE_TO_KEY = {
   'Technique': 'technique',
 }
 
+// Clean a template's markup once; params stay separate so the UI can render
+// the description at any level with a slider.
+function cleanTemplate(desc) {
+  return (desc ?? '').replace(/<\/?[a-z][^>]*>/gi, '').replace(/\\n/g, '\n').trim()
+}
+
+function toAbility(s) {
+  return {
+    name: s.name ?? '',
+    template: cleanTemplate(s.desc),
+    params: s.params ?? [],
+  }
+}
+
+const EMPTY_ABILITY = { name: '', template: '', params: [] }
+
 function buildAbilities(skillIds, preferRevamp) {
   const abilities = {
-    basic_atk: { name: '', description: '' },
-    skill: { name: '', description: '' },
-    ultimate: { name: '', description: '' },
-    talent: { name: '', description: '' },
-    technique: { name: '', description: '' },
+    basic_atk: EMPTY_ABILITY,
+    skill: EMPTY_ABILITY,
+    ultimate: EMPTY_ABILITY,
+    talent: EMPTY_ABILITY,
+    technique: EMPTY_ABILITY,
   }
   const extra = []
   // Group this character's skills by canonical slot, keeping every variant.
@@ -76,31 +92,30 @@ function buildAbilities(skillIds, preferRevamp) {
     const s = srrSkills[sid]
     if (!s || !s.type_text) continue
     const key = TYPE_TO_KEY[s.type_text]
-    const lastParams = s.params?.[s.params.length - 1]
-    const entry = {
-      id: String(s.id),
-      type: s.type_text,
-      name: s.name ?? '',
-      description: renderTemplate(s.desc, lastParams),
-    }
-    if (!entry.name && !entry.description) continue
+    const entry = { id: String(s.id), type: s.type_text, ...toAbility(s) }
+    if (!entry.name && !entry.template) continue
     if (key) {
       if (!byKey.has(key)) byKey.set(key, [])
       byKey.get(key).push(entry)
     } else {
-      extra.push({ type: entry.type, name: entry.name, description: entry.description })
+      extra.push({ type: entry.type, name: entry.name, template: entry.template, params: entry.params })
     }
   }
   for (const [key, variants] of byKey) {
     // Revamped (b1) kits ship their texts under "1"-prefixed skill ids; prefer
-    // those for b1 characters and the plain ids otherwise.
+    // those for b1 characters and the plain ids otherwise. Unchosen variants of
+    // the same slot are the other kit version — drop them instead of listing
+    // confusing duplicates. Enhanced states with a *different* name are kept.
     const revamp = variants.find((v) => v.id.length > 6)
     const original = variants.find((v) => v.id.length <= 6)
     const chosen = (preferRevamp ? revamp ?? original : original ?? revamp)
-    abilities[key] = { name: chosen.name, description: chosen.description }
-    // Keep the remaining variants (e.g. enhanced basics) as extra entries.
-    for (const v of variants) {
-      if (v !== chosen) extra.push({ type: v.type, name: v.name, description: v.description })
+    abilities[key] = { name: chosen.name, template: chosen.template, params: chosen.params }
+    const seen = new Set([chosen.name])
+    const preferredPool = variants.filter((v) => (v.id.length > 6) === (chosen.id.length > 6))
+    for (const v of preferredPool) {
+      if (seen.has(v.name)) continue
+      seen.add(v.name)
+      extra.push({ type: v.type, name: v.name, template: v.template, params: v.params })
     }
   }
   return { abilities, extra }
