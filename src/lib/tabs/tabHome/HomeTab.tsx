@@ -73,6 +73,9 @@ export function HomeTab() {
           align='right'
         />
         <CommunitySection />
+        <footer style={{ textAlign: 'center', padding: '28px 0 16px', opacity: 0.5, fontSize: 13 }}>
+          Based on Fribbels' HSR Optimizer
+        </footer>
       </div>
     </div>
   )

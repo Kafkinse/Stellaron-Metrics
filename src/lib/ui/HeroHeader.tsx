@@ -39,7 +39,7 @@ export function HeroHeader() {
       >
         <h1 className={classes.headerTitle}>
           <Trans t={t} i18nKey='Welcome'>
-            Welcome to the<br />Fribbels Star Rail Optimizer
+            Welcome to<br />Stellaron Metrics
           </Trans>
         </h1>
         <SearchBar />

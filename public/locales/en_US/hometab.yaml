@@ -58,8 +58,8 @@ FeatureCard:
       - Visualize high, mid, and low rolls across your substats
       - See the reroll dice potential for each piece
 Hero:
-  Welcome: Welcome to the
-  Title: Fribbels Star Rail Optimizer
+  Welcome: Welcome to
+  Title: Stellaron Metrics
 SearchBar:
   Placeholder: UID
   Label: 'Enter your UID to view your showcase characters'
