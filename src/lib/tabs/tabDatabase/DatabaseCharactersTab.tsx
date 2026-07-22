@@ -187,6 +187,27 @@ function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void 
         <AbilityBlock key={`${id}-extra-${i}`} tag={ability.type} ability={ability} />
       ))}
 
+      <div className={styles.sectionTitle}>Traces</div>
+      {lore?.majorTraces?.length
+        ? lore.majorTraces.map((trace) => (
+          <div key={trace.unlock + trace.name} className={styles.entryBlock}>
+            <div className={styles.entryTag}>{trace.unlock}</div>
+            <div className={styles.entryName}>{trace.name}</div>
+            <p className={styles.entryDesc}>{trace.description}</p>
+          </div>
+        ))
+        : <div className={styles.placeholder}>Text not available yet</div>}
+      {meta.traces && Object.keys(meta.traces).length > 0 && (
+        <div className={styles.entryBlock}>
+          <div className={styles.entryTag}>Minor traces total</div>
+          <p className={styles.entryDesc}>
+            {Object.entries(meta.traces)
+              .map(([stat, value]) => `${stat} +${value < 1 ? `${+(value * 100).toFixed(1)}%` : value}`)
+              .join(' · ')}
+          </p>
+        </div>
+      )}
+
       <div className={styles.sectionTitle}>Eidolons</div>
       {lore?.eidolons?.length
         ? lore.eidolons.map((eidolon) => (

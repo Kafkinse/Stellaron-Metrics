@@ -25,12 +25,13 @@ async function fetchJson(name) {
   return res.json()
 }
 
-const [srrCharacters, srrRanks, srrSkills, srrLcRanks, srrLcs] = await Promise.all([
+const [srrCharacters, srrRanks, srrSkills, srrLcRanks, srrLcs, srrTrees] = await Promise.all([
   fetchJson('characters.json'),
   fetchJson('character_ranks.json'),
   fetchJson('character_skills.json'),
   fetchJson('light_cone_ranks.json'),
   fetchJson('light_cones.json'),
+  fetchJson('character_skill_trees.json'),
 ])
 
 // --- template rendering -------------------------------------------------------
@@ -121,6 +122,28 @@ function buildAbilities(skillIds, preferRevamp) {
   return { abilities, extra }
 }
 
+/**
+ * Major traces (A2/A4/A6 bonus abilities) for a character. Tree node ids live
+ * in the range [charId*1000, charId*1000+999]; majors are the nodes that carry
+ * a name + description. The unlock ascension comes from levels[0].promotion.
+ */
+function buildMajorTraces(baseId) {
+  const lo = Number(baseId) * 1000
+  const hi = lo + 999
+  const majors = Object.values(srrTrees).filter((t) => {
+    const id = Number(t.id)
+    return id >= lo && id <= hi && t.name && t.desc
+  })
+  return majors
+    .map((t) => ({
+      unlock: t.levels?.[0]?.promotion ?? 0,
+      name: t.name,
+      description: renderTemplate(cleanTemplate(t.desc), t.params?.[0]),
+    }))
+    .sort((a, b) => a.unlock - b.unlock)
+    .map((t) => ({ unlock: `A${t.unlock}`, name: t.name, description: t.description }))
+}
+
 function buildEidolons(rankIds) {
   const eidolons = []
   for (const rid of rankIds) {
@@ -159,6 +182,7 @@ for (const id of Object.keys(gameData.characters)) {
     element: meta?.element ?? '',
     abilities,
     ...(extra.length ? { extraAbilities: extra } : {}),
+    majorTraces: buildMajorTraces(baseId),
     eidolons: buildEidolons(srr.ranks ?? []),
   }
 }

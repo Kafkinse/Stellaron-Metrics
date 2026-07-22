@@ -22,6 +22,12 @@ export interface LoreEidolon {
   description: string,
 }
 
+export interface LoreMajorTrace {
+  unlock: string, // 'A2' | 'A4' | 'A6'
+  name: string,
+  description: string,
+}
+
 export interface CharacterLore {
   name: string,
   path: string,
@@ -34,6 +40,7 @@ export interface CharacterLore {
     technique: LoreAbility,
   },
   extraAbilities?: LoreExtraAbility[],
+  majorTraces?: LoreMajorTrace[],
   eidolons: LoreEidolon[],
 }
 
