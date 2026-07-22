@@ -207,6 +207,12 @@
   font-style: italic;
 }
 
+/* Level-dependent numbers inside ability / superimposition descriptions. */
+.paramValue {
+  color: var(--primary-light);
+  font-weight: 600;
+}
+
 .partsRow {
   display: flex;
   gap: 10px;

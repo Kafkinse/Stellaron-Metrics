@@ -44,19 +44,11 @@ export interface CharacterLore {
   eidolons: LoreEidolon[],
 }
 
-export interface LoreSuperimposition {
-  level: number,
-  description: string,
-}
-
 export interface LightConeLore {
   name: string,
   path: string,
   rarity: number,
-  passive: {
-    name: string,
-    superimpositions: LoreSuperimposition[],
-  },
+  passive: LoreAbility,
 }
 
 interface DatabaseLore {
@@ -74,21 +66,39 @@ export function getLightConeLore(id: string): LightConeLore | undefined {
   return lore.lightCones[id]
 }
 
+export interface DescriptionSegment {
+  text: string,
+  /** True when the segment is a level-dependent substituted value. */
+  param: boolean,
+}
+
+const PLACEHOLDER = /#(\d+)\[(i|f\d)\](%?)/g
+
 /**
- * Render an ability template at a given level (1-based). Placeholders look
- * like `#1[i]%` / `#2[f1]`: index into the level's parameter row, `i` rounds,
- * `fN` fixes decimals, and a trailing `%` means the value is a fraction.
+ * Render an ability template at a given level (1-based) as segments, so the UI
+ * can highlight substituted values. Placeholders look like `#1[i]%` / `#2[f1]`:
+ * index into the level's parameter row, `i` rounds, `fN` fixes decimals, and a
+ * trailing `%` means the value is a fraction shown as a percentage.
  */
-export function renderAbilityDescription(ability: LoreAbility, level: number): string {
+export function renderDescriptionSegments(ability: LoreAbility, level: number): DescriptionSegment[] {
   const row = ability.params[Math.min(Math.max(level, 1), ability.params.length) - 1]
-  if (!row) return ability.template
-  return ability.template.replace(/#(\d+)\[(i|f\d)\](%?)/g, (_, idxStr: string, fmt: string, pct: string) => {
+  if (!row) return [{ text: ability.template, param: false }]
+
+  const segments: DescriptionSegment[] = []
+  let last = 0
+  for (const match of ability.template.matchAll(PLACEHOLDER)) {
+    const [full, idxStr, fmt, pct] = match
+    if (match.index > last) segments.push({ text: ability.template.slice(last, match.index), param: false })
     const value = row[Number(idxStr) - 1]
-    if (value == null) return ''
-    const v = pct ? value * 100 : value
-    const text = fmt === 'i' ? String(Math.round(v * 100) / 100) : v.toFixed(Number(fmt.slice(1)))
-    return text + pct
-  })
+    if (value != null) {
+      const v = pct ? value * 100 : value
+      const text = fmt === 'i' ? String(Math.round(v * 100) / 100) : v.toFixed(Number(fmt.slice(1)))
+      segments.push({ text: text + pct, param: true })
+    }
+    last = match.index + full.length
+  }
+  if (last < ability.template.length) segments.push({ text: ability.template.slice(last), param: false })
+  return segments
 }
 
 export const ABILITY_SLOTS: { key: keyof CharacterLore['abilities'], label: string }[] = [

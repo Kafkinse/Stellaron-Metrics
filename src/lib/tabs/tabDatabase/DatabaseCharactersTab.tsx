@@ -15,7 +15,7 @@ import {
   ABILITY_SLOTS,
   getCharacterLore,
   type LoreAbility,
-  renderAbilityDescription,
+  renderDescriptionSegments,
 } from 'lib/tabs/tabDatabase/databaseLore'
 import React, {
   useMemo,
@@ -260,7 +260,19 @@ function AbilityBlock({ tag, ability }: { tag: string, ability: LoreAbility | un
           />
         </div>
       )}
-      <p className={styles.entryDesc}>{renderAbilityDescription(ability, level)}</p>
+      <AbilityDescription ability={ability} level={level} />
     </div>
+  )
+}
+
+/** Ability text with the level-dependent values highlighted in the accent color. */
+export function AbilityDescription({ ability, level }: { ability: LoreAbility, level: number }) {
+  return (
+    <p className={styles.entryDesc}>
+      {renderDescriptionSegments(ability, level).map((segment, i) =>
+        segment.param
+          ? <span key={i} className={styles.paramValue}>{segment.text}</span>
+          : <React.Fragment key={i}>{segment.text}</React.Fragment>)}
+    </p>
   )
 }

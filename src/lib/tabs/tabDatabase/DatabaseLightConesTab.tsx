@@ -10,6 +10,7 @@ import {
 import { Assets } from 'lib/rendering/assets'
 import { getGameMetadata } from 'lib/state/gameMetadata'
 import styles from 'lib/tabs/tabDatabase/DatabaseTab.module.css'
+import { AbilityDescription } from 'lib/tabs/tabDatabase/DatabaseCharactersTab'
 import { getLightConeLore } from 'lib/tabs/tabDatabase/databaseLore'
 import React, {
   useMemo,
@@ -109,9 +110,6 @@ function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void 
   const lore = getLightConeLore(id)
   const [superimposition, setSuperimposition] = useState('1')
 
-  const description = lore?.passive.superimpositions
-    .find((s) => s.level === Number(superimposition))?.description
-
   return (
     <div className={styles.detailPane}>
       <button className={styles.backButton} onClick={onBack}>
@@ -146,10 +144,10 @@ function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void 
       </div>
 
       <div className={styles.sectionTitle}>Passive</div>
-      {lore?.passive.name || description
+      {lore?.passive.name || lore?.passive.template
         ? (
           <div className={styles.entryBlock}>
-            <div className={styles.entryName}>{lore?.passive.name}</div>
+            <div className={styles.entryName}>{lore.passive.name}</div>
             <Chip.Group multiple={false} value={superimposition} onChange={(v) => setSuperimposition(v ?? '1')}>
               <Group gap={4} mb={8} mt={4}>
                 {['1', '2', '3', '4', '5'].map((level) => (
@@ -157,7 +155,7 @@ function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void 
                 ))}
               </Group>
             </Chip.Group>
-            <p className={styles.entryDesc}>{description ?? ''}</p>
+            <AbilityDescription ability={lore.passive} level={Number(superimposition)} />
           </div>
         )
         : <div className={styles.placeholder}>Text not available yet</div>}

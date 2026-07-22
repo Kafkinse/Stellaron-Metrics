@@ -202,12 +202,12 @@ for (const id of Object.keys(gameData.lightCones)) {
     name: meta?.name ?? srrLcs[id]?.name ?? '',
     path: meta?.path ?? '',
     rarity: meta?.rarity ?? srrLcs[id]?.rarity ?? 0,
+    // Same template+params shape as abilities, so the UI renders any
+    // superimposition level and can highlight the substituted values.
     passive: {
       name: rank.skill ?? '',
-      superimpositions: (rank.params ?? []).map((p, i) => ({
-        level: i + 1,
-        description: renderTemplate(rank.desc, p),
-      })),
+      template: cleanTemplate(rank.desc),
+      params: rank.params ?? [],
     },
   }
 }
