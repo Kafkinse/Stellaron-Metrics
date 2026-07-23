@@ -105,17 +105,17 @@
 
 .rollHigh {
   composes: roll;
-  background-color: #0e7eff;
+  background-color: #de79f0;
 }
 
 .rollMid {
   composes: roll;
-  background-color: #63a9ff;
+  background-color: #27bbe4;
 }
 
 .rollLow {
   composes: roll;
-  background-color: #a5bcd9;
+  background-color: #8eea83;
 }
 
 .rollLinePlaceholder {

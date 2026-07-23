@@ -236,9 +236,9 @@ export const RecentRelicCard = memo((props: RelicCardProps) => {
 RecentRelicCard.displayName = 'RecentRelicCard'
 
 // Modified slightly from the est tbp cards
-const highRollColor = '#218cff'
-const midRollColor = '#63a9ff'
-const lowRollColor = '#9aa3ae'
+const highRollColor = '#de79f0'
+const midRollColor = '#27bbe4'
+const lowRollColor = '#8eea83'
 
 const colorScale = chroma.scale([lowRollColor, midRollColor, highRollColor])
   .domain([20, 50, 80])

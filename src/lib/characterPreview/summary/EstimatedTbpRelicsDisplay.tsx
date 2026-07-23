@@ -297,9 +297,9 @@ const EstbpMetricCard = memo(function EstbpMetricCard({ relic, weights }: {
   )
 })
 
-const highRollColor = '#0e7eff'
-const midRollColor = '#63a9ff'
-const lowRollColor = '#a5bcd9'
+const highRollColor = '#de79f0'
+const midRollColor = '#27bbe4'
+const lowRollColor = '#8eea83'
 
 function HighRoll() {
   return <div className={styles.rollHigh} />
