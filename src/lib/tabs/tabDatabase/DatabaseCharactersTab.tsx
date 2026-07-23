@@ -1,6 +1,7 @@
 import {
   Chip,
   Group,
+  SegmentedControl,
   Slider,
   TextInput,
 } from '@mantine/core'
@@ -11,6 +12,7 @@ import {
 } from '@tabler/icons-react'
 import { Assets } from 'lib/rendering/assets'
 import { getGameMetadata } from 'lib/state/gameMetadata'
+import { CharacterBuild } from 'lib/tabs/tabDatabase/CharacterBuild'
 import styles from 'lib/tabs/tabDatabase/DatabaseTab.module.css'
 import {
   ABILITY_SLOTS,
@@ -182,6 +184,7 @@ export function DatabaseCharactersTab() {
 export function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void }) {
   const meta = getGameMetadata().characters[id]
   const lore = getCharacterLore(id)
+  const [view, setView] = useState<'overview' | 'build'>('overview')
 
   // Abilities that buff a named ally (e.g. Cyrene's "Ode to ...") get their own
   // per-ally picker; the rest render inline like normal extra abilities.
@@ -215,6 +218,16 @@ export function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () =
         </div>
       </div>
 
+      <SegmentedControl
+        className={styles.detailTabs}
+        fullWidth
+        value={view}
+        onChange={(v) => setView(v as 'overview' | 'build')}
+        data={[{ label: 'Overview', value: 'overview' }, { label: 'Build', value: 'build' }]}
+      />
+
+      {view === 'build' ? <CharacterBuild id={id} /> : (
+        <>
       <div className={styles.sectionTitle}>Base stats (Lv. 80)</div>
       <div className={styles.statsTable}>
         {STAT_KEYS.map((key) => (
@@ -251,14 +264,20 @@ export function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () =
         ))
         : <div className={styles.placeholder}>Text not available yet</div>}
       {meta.traces && Object.keys(meta.traces).length > 0 && (
-        <div className={styles.entryBlock}>
-          <div className={styles.entryTag}>Minor traces total</div>
-          <p className={styles.entryDesc}>
-            {Object.entries(meta.traces)
-              .map(([stat, value]) => `${stat} +${value < 1 ? `${+(value * 100).toFixed(1)}%` : value}`)
-              .join(' · ')}
-          </p>
-        </div>
+        <>
+          <div className={styles.sectionTitle}>Minor trace bonus</div>
+          <div className={styles.statBonusGrid}>
+            {Object.entries(meta.traces).map(([stat, value]) => (
+              <div key={stat} className={styles.statBonusCard}>
+                <img src={Assets.getStatIcon(stat, (value as number) < 1)} className={styles.statBonusIcon} />
+                <div className={styles.statBonusLabel}>{stat}</div>
+                <div className={styles.statBonusValue}>
+                  +{(value as number) < 1 ? `${+((value as number) * 100).toFixed(1)}%` : value}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
 
       <div className={styles.sectionTitle}>Eidolons</div>
@@ -278,6 +297,8 @@ export function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () =
           </div>
         ))
         : <div className={styles.placeholder}>Text not available yet</div>}
+        </>
+      )}
     </div>
   )
 }
