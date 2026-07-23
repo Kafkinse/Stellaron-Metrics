@@ -4,6 +4,7 @@ import { Assets } from 'lib/rendering/assets'
 import { getGameMetadata } from 'lib/state/gameMetadata'
 import { getScoringMetadata } from 'lib/stores/scoring/scoringStore'
 import styles from 'lib/tabs/tabDatabase/DatabaseTab.module.css'
+import { useMemo } from 'react'
 import { type CharacterId } from 'types/character'
 import { type LightConeId } from 'types/lightCone'
 
@@ -16,6 +17,8 @@ const MAIN_STAT_PARTS: { part: string, label: string }[] = [
   { part: Parts.LinkRope, label: 'Rope' },
 ]
 
+const MAX_SETS = 4
+
 function InlineStat({ stat }: { stat: string }) {
   return (
     <span className={styles.inlineStat}>
@@ -25,60 +28,102 @@ function InlineStat({ stat }: { stat: string }) {
   )
 }
 
-/** Recommended light cone, relics, main/substats and teammates for a character,
- * sourced from the same scoring metadata the optimizer's DPS benchmark uses. */
+// Collapse relic-set combos to unique picks (a 4pc and the same set as a 2+2
+// count once) and cap the list.
+function uniqueRelicCombos(combos: string[][]): string[][] {
+  const seen = new Set<string>()
+  const out: string[][] = []
+  for (const combo of combos) {
+    const unique = [...new Set(combo)]
+    const key = [...unique].sort().join('|')
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(unique)
+    if (out.length >= MAX_SETS) break
+  }
+  return out
+}
+
+/** Recommended light cone(s), relics, main/substats and teams for a character,
+ * from the same scoring metadata the optimizer's DPS benchmark uses. */
 export function CharacterBuild({ id }: { id: CharacterId }) {
   const meta = getGameMetadata()
   const config = getCharacterConfig(id)
   const scoring = getScoringMetadata(id)
   const sim = scoring.simulation
   const sigLc = config?.defaultLightCone
-
-  if (!sim && !sigLc) {
-    return <div className={styles.placeholder}>No build recommendations yet</div>
-  }
+  const charPath = meta.characters[id]?.path
 
   const lcName = (lcId?: LightConeId) => (lcId ? meta.lightCones[lcId]?.name ?? '' : '')
 
+  // Signature light cone plus up to 3 same-path 5★ alternatives.
+  const lightCones = useMemo(() => {
+    const list: { id: LightConeId, signature: boolean }[] = []
+    if (sigLc) list.push({ id: sigLc, signature: true })
+    Object.values(meta.lightCones)
+      .filter((lc) => lc.path === charPath && lc.rarity === 5 && !lc.unreleased && lc.id !== sigLc)
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .slice(0, 3)
+      .forEach((lc) => list.push({ id: lc.id as LightConeId, signature: false }))
+    return list
+  }, [id, sigLc, charPath, meta])
+
+  const relicSets = uniqueRelicCombos(sim?.relicSets ?? [])
+  const ornaments = [...new Set(sim?.ornamentSets ?? [])].slice(0, MAX_SETS)
+
+  // Team variations: prefer the curated leaderboard teams, else the single
+  // recommended team.
+  const teams: { characterId: CharacterId, lightCone?: LightConeId }[][] = useMemo(() => {
+    if (sim?.leaderboardTeams?.length) {
+      return sim.leaderboardTeams.map((team) =>
+        team.teammates.map((tm) => ({ characterId: tm.characterId, lightCone: tm.lightCones?.[0] })))
+    }
+    if (sim?.teammates?.length) {
+      return [sim.teammates.map((tm) => ({ characterId: tm.characterId, lightCone: tm.lightCone }))]
+    }
+    return []
+  }, [sim])
+
+  if (lightCones.length === 0 && !sim) {
+    return <div className={styles.placeholder}>No build recommendations yet</div>
+  }
+
   return (
     <>
-      {sigLc && (
+      {lightCones.length > 0 && (
         <>
-          <div className={styles.sectionTitle}>Light cone</div>
-          <div className={styles.setRow}>
-            <img src={Assets.getLightConeIconById(sigLc)} className={styles.setIcon} />
-            <span className={styles.setName}>{lcName(sigLc)}</span>
-          </div>
+          <div className={styles.sectionTitle}>Light cones</div>
+          {lightCones.map(({ id: lcId, signature }) => (
+            <div key={lcId} className={styles.setRow}>
+              <img src={Assets.getLightConeIconById(lcId)} className={styles.setIcon} />
+              <span className={styles.setName}>{lcName(lcId)}</span>
+              {signature && <span className={styles.setPieces}>SIG</span>}
+            </div>
+          ))}
         </>
       )}
 
-      {sim?.relicSets && sim.relicSets.length > 0 && (
+      {relicSets.length > 0 && (
         <>
           <div className={styles.sectionTitle}>Relic sets</div>
-          {sim.relicSets.map((combo, i) => {
-            // A combo of one set (or the same set twice) is a 4-piece; two
-            // different sets is a 2+2 split.
-            const unique = [...new Set(combo)]
-            const fourPiece = unique.length === 1
-            return (
-              <div key={i} className={styles.setRow}>
-                <span className={styles.setIcons}>
-                  {unique.map((set, j) => (
-                    <img key={j} src={Assets.getSetImage(set, Parts.Head, true)} className={styles.setIcon} title={set} />
-                  ))}
-                </span>
-                <span className={styles.setName}>{unique.join(' + ')}</span>
-                <span className={styles.setPieces}>{fourPiece ? '4PC' : '2+2'}</span>
-              </div>
-            )
-          })}
+          {relicSets.map((combo, i) => (
+            <div key={i} className={styles.setRow}>
+              <span className={styles.setIcons}>
+                {combo.map((set, j) => (
+                  <img key={j} src={Assets.getSetImage(set, Parts.Head, true)} className={styles.setIcon} title={set} />
+                ))}
+              </span>
+              <span className={styles.setName}>{combo.join(' + ')}</span>
+              <span className={styles.setPieces}>{combo.length === 1 ? '4PC' : '2+2'}</span>
+            </div>
+          ))}
         </>
       )}
 
-      {sim?.ornamentSets && sim.ornamentSets.length > 0 && (
+      {ornaments.length > 0 && (
         <>
           <div className={styles.sectionTitle}>Planar ornaments</div>
-          {sim.ornamentSets.map((set, i) => (
+          {ornaments.map((set, i) => (
             <div key={i} className={styles.setRow}>
               <img src={Assets.getSetImage(set, Parts.PlanarSphere, true)} className={styles.setIcon} title={set} />
               <span className={styles.setName}>{set}</span>
@@ -120,25 +165,30 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
         </>
       )}
 
-      {sim?.teammates && sim.teammates.length > 0 && (
+      {teams.length > 0 && (
         <>
-          <div className={styles.sectionTitle}>Recommended teammates</div>
-          <div className={styles.teammateGrid}>
-            {sim.teammates.map((tm, i) => (
-              <div key={i} className={styles.teammateCard}>
-                <span className={styles.teammatePortrait}>
-                  <img src={Assets.getCharacterAvatarById(tm.characterId)} className={styles.teammateIcon} loading='lazy' />
-                  {tm.lightCone && (
-                    <img src={Assets.getLightConeIconById(tm.lightCone)} className={styles.teammateLcBadge} loading='lazy' />
-                  )}
-                </span>
-                <span>
-                  <div className={styles.teammateName}>{meta.characters[tm.characterId]?.name ?? tm.characterId}</div>
-                  {tm.lightCone && <div className={styles.teammateLcName}>{lcName(tm.lightCone)}</div>}
-                </span>
+          <div className={styles.sectionTitle}>{teams.length > 1 ? 'Team variations' : 'Recommended team'}</div>
+          {teams.map((team, i) => (
+            <div key={i} className={styles.teamBlock}>
+              {teams.length > 1 && <div className={styles.teamLabel}>Team {i + 1}</div>}
+              <div className={styles.teammateGrid}>
+                {team.map((tm, j) => (
+                  <div key={j} className={styles.teammateCard}>
+                    <span className={styles.teammatePortrait}>
+                      <img src={Assets.getCharacterAvatarById(tm.characterId)} className={styles.teammateIcon} loading='lazy' />
+                      {tm.lightCone && (
+                        <img src={Assets.getLightConeIconById(tm.lightCone)} className={styles.teammateLcBadge} loading='lazy' />
+                      )}
+                    </span>
+                    <span>
+                      <div className={styles.teammateName}>{meta.characters[tm.characterId]?.name ?? tm.characterId}</div>
+                      {tm.lightCone && <div className={styles.teammateLcName}>{lcName(tm.lightCone)}</div>}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </>
       )}
     </>

@@ -484,6 +484,19 @@
   font-size: 12px;
 }
 
+.teamBlock {
+  margin-bottom: 10px;
+}
+
+.teamLabel {
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 5px;
+}
+
 .teammateGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
