@@ -3,12 +3,14 @@
 # container only when new commits actually arrived (e.g. after the daily
 # data-sync workflow commits fresh characters / lore).
 #
-# Install on the VPS (adjust the path), then add a cron entry. The data-sync
-# workflow only runs every 3 days, so a twice-daily pull is plenty:
+# Install on the VPS, then add a cron entry. The data-sync workflow only runs
+# every 3 days, so a twice-daily pull is plenty. Use absolute paths (cron does
+# not expand ~) and a log the running user can actually write to (the home dir,
+# not /var/log, unless cron runs as root). This one-liner fills both in and
+# replaces any stale entry:
 #   chmod +x deploy/vps-auto-update.sh
-#   crontab -e
-#   # 06:30 and 18:30 UTC, log to a file:
-#   30 6,18 * * * /home/user/Stellaron-Metrics/deploy/vps-auto-update.sh >> /var/log/stellaron-update.log 2>&1
+#   REPO="$(cd ~/Stellaron-Metrics && pwd)"; ( crontab -l 2>/dev/null | grep -v 'vps-auto-update.sh'; \
+#     echo "30 6,18 * * * $REPO/deploy/vps-auto-update.sh >> $HOME/stellaron-update.log 2>&1" ) | crontab -
 set -euo pipefail
 
 # Repo root = the directory that contains this script's parent.
