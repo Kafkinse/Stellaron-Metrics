@@ -107,7 +107,7 @@ export function DatabaseRelicsTab() {
                       setDetailOpened(true)
                     }}
                   >
-                    <img src={Assets.getSetImage(entry.set, Parts.Head, true)} className={styles.cardIcon} loading='lazy' />
+                    <img src={Assets.getSetImage(entry.set, Parts.Head, true)} className={`${styles.cardIcon} ${styles.iconNeutral}`} loading='lazy' />
                     <span className={styles.cardName}>{entry.name}</span>
                   </button>
                 ))}
@@ -132,7 +132,7 @@ function RelicSetDetails({ entry, onBack }: { entry: SetEntry, onBack: () => voi
       </button>
 
       <div className={styles.detailHeader}>
-        <img src={Assets.getSetImage(entry.set, Parts.Head, true)} className={styles.detailPortrait} />
+        <img src={Assets.getSetImage(entry.set, Parts.Head, true)} className={`${styles.detailPortrait} ${styles.iconNeutral}`} />
         <div>
           <h3 className={styles.detailName}>{entry.name}</h3>
           <div className={styles.detailMeta}>
@@ -156,7 +156,7 @@ function RelicSetDetails({ entry, onBack }: { entry: SetEntry, onBack: () => voi
           <img
             key={part}
             src={Assets.getSetImage(entry.set, part)}
-            className={styles.partIcon}
+            className={`${styles.partIcon} ${styles.iconNeutral}`}
             title={part}
             loading='lazy'
           />

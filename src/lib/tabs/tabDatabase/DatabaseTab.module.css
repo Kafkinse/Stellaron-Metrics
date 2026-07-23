@@ -99,6 +99,24 @@
   background: var(--layer-inset);
 }
 
+/* Rarity backdrops so portraits/icons sit on a soft gradient instead of a
+   flat black square. Applied on top of the icon's base background. */
+.iconR5 {
+  background: radial-gradient(circle at 50% 30%, #d9b45c 0%, #7c5b1f 58%, #251c0d 100%);
+}
+
+.iconR4 {
+  background: radial-gradient(circle at 50% 30%, #b78fe4 0%, #66399b 58%, #201033 100%);
+}
+
+.iconR3 {
+  background: radial-gradient(circle at 50% 30%, #67a7ea 0%, #33608f 58%, #0f1e2d 100%);
+}
+
+.iconNeutral {
+  background: radial-gradient(circle at 50% 30%, #4b3a70 0%, #241640 58%, #0e0a1e 100%);
+}
+
 .cardName {
   font-size: 11px;
   line-height: 1.25;

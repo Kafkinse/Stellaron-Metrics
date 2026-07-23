@@ -39,6 +39,19 @@ function rarityClass(rarity: number) {
   return styles.rarity3
 }
 
+function rarityIconClass(rarity: number) {
+  if (rarity === 5) return styles.iconR5
+  if (rarity === 4) return styles.iconR4
+  return styles.iconR3
+}
+
+// Max skill level reachable without eidolons: Basic ATK caps at 6, the rest at
+// 10. Sliders open at that cap so descriptions show real end-game numbers.
+function defaultAbilityLevel(tag: string, maxLevel: number) {
+  const cap = /basic\s*atk/i.test(tag) ? 6 : 10
+  return Math.min(maxLevel || 1, cap)
+}
+
 export function DatabaseCharactersTab() {
   const characters = useMemo(() => {
     const all = getGameMetadata().characters
@@ -141,7 +154,7 @@ export function DatabaseCharactersTab() {
                       setDetailOpened(true)
                     }}
                   >
-                    <img src={Assets.getCharacterAvatarById(c.id)} className={styles.cardIcon} loading='lazy' />
+                    <img src={Assets.getCharacterAvatarById(c.id)} className={`${styles.cardIcon} ${rarityIconClass(c.rarity)}`} loading='lazy' />
                     <span className={styles.cardName}>
                       <span className={rarityClass(c.rarity)}>{'★'.repeat(c.rarity)}</span>
                       <br />
@@ -176,7 +189,7 @@ function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void 
       </button>
 
       <div className={styles.detailHeader}>
-        <img src={Assets.getCharacterAvatarById(id)} className={styles.detailPortrait} />
+        <img src={Assets.getCharacterAvatarById(id)} className={`${styles.detailPortrait} ${rarityIconClass(meta.rarity)}`} />
         <div>
           <h3 className={styles.detailName}>{meta.name}</h3>
           <div className={styles.detailMeta}>
@@ -262,6 +275,12 @@ function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void 
  * Picker for abilities that buff a specific ally (e.g. Cyrene's "Ode to ..."
  * set). Pick an ally by their portrait to read that ally's buff.
  */
+// Targets whose name isn't unique in metadata (every Trailblazer path shares
+// the name "Trailblazer") need an explicit id. Stelle's Remembrance portrait.
+const TARGET_ID_ALIASES: Record<string, CharacterId> = {
+  'trailblazer (remembrance)': '8008' as CharacterId,
+}
+
 function HeirBuffPicker({ abilities }: { abilities: LoreExtraAbility[] }) {
   const [index, setIndex] = useState(0)
   const idByName = useMemo(() => {
@@ -272,13 +291,19 @@ function HeirBuffPicker({ abilities }: { abilities: LoreExtraAbility[] }) {
     return map
   }, [])
 
+  const resolveTargetId = (name: string | undefined) => {
+    if (!name) return undefined
+    const key = name.toLowerCase()
+    return TARGET_ID_ALIASES[key] ?? idByName.get(key)
+  }
+
   const selected = abilities[Math.min(index, abilities.length - 1)]
 
   return (
     <div className={styles.entryBlock}>
       <div className={styles.heirPicker}>
         {abilities.map((ability, i) => {
-          const cid = ability.target ? idByName.get(ability.target.toLowerCase()) : undefined
+          const cid = resolveTargetId(ability.target)
           return (
             <button
               key={ability.name}
@@ -294,7 +319,9 @@ function HeirBuffPicker({ abilities }: { abilities: LoreExtraAbility[] }) {
         })}
       </div>
       <div className={styles.entryTag}>{selected.target}</div>
-      <AbilityBlockBody key={selected.name} ability={selected} />
+      {/* No key: the same body persists across ally switches so the chosen
+          level is kept instead of resetting. Opens at 10 (non-eidolon cap). */}
+      <AbilityBlockBody ability={selected} defaultLevel={Math.min(10, selected.params.length || 1)} />
     </div>
   )
 }
@@ -312,25 +339,28 @@ function AbilityBlock({ tag, ability }: { tag: string, ability: LoreAbility | un
   return (
     <div className={styles.entryBlock}>
       <div className={styles.entryTag}>{tag}</div>
-      <AbilityBlockBody ability={ability} />
+      <AbilityBlockBody ability={ability} defaultLevel={defaultAbilityLevel(tag, ability.params.length)} />
     </div>
   )
 }
 
 /** Ability name, level slider and description — the body shared by the ability
- * block and the per-ally buff picker. Owns its own level state. */
-function AbilityBlockBody({ ability }: { ability: LoreAbility }) {
-  const [level, setLevel] = useState(1)
+ * block and the per-ally buff picker. Owns its own level state, opening at
+ * `defaultLevel`; the shown level is clamped so switching abilities never
+ * exceeds a shorter one's range. */
+function AbilityBlockBody({ ability, defaultLevel = 1 }: { ability: LoreAbility, defaultLevel?: number }) {
+  const [level, setLevel] = useState(defaultLevel)
   const maxLevel = ability.params.length
+  const shown = Math.min(level, maxLevel || 1)
 
   return (
     <>
       <div className={styles.entryName}>{ability.name}</div>
       {maxLevel > 1 && (
         <div className={styles.levelRow}>
-          <span className={styles.levelLabel}>Lv. {level}/{maxLevel}</span>
+          <span className={styles.levelLabel}>Lv. {shown}/{maxLevel}</span>
           <Slider
-            value={level}
+            value={shown}
             onChange={setLevel}
             min={1}
             max={maxLevel}
@@ -340,7 +370,7 @@ function AbilityBlockBody({ ability }: { ability: LoreAbility }) {
           />
         </div>
       )}
-      <AbilityDescription ability={ability} level={level} />
+      <AbilityDescription ability={ability} level={shown} />
     </>
   )
 }

@@ -27,6 +27,12 @@ function rarityClass(rarity: number) {
   return styles.rarity3
 }
 
+function rarityIconClass(rarity: number) {
+  if (rarity === 5) return styles.iconR5
+  if (rarity === 4) return styles.iconR4
+  return styles.iconR3
+}
+
 export function DatabaseLightConesTab() {
   const lightCones = useMemo(() =>
     Object.values(getGameMetadata().lightCones)
@@ -98,7 +104,7 @@ export function DatabaseLightConesTab() {
                       setDetailOpened(true)
                     }}
                   >
-                    <img src={Assets.getLightConeIconById(lc.id)} className={styles.cardIcon} loading='lazy' />
+                    <img src={Assets.getLightConeIconById(lc.id)} className={`${styles.cardIcon} ${rarityIconClass(lc.rarity)}`} loading='lazy' />
                     <span className={styles.cardName}>
                       <span className={rarityClass(lc.rarity)}>{'★'.repeat(lc.rarity)}</span>
                       <br />
@@ -129,7 +135,7 @@ function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void 
       </button>
 
       <div className={styles.detailHeader}>
-        <img src={Assets.getLightConeIconById(id)} className={styles.detailPortrait} />
+        <img src={Assets.getLightConeIconById(id)} className={`${styles.detailPortrait} ${rarityIconClass(meta.rarity)}`} />
         <div>
           <h3 className={styles.detailName}>{meta.name}</h3>
           <div className={styles.detailMeta}>
