@@ -484,6 +484,20 @@
   font-size: 12px;
 }
 
+.attribution {
+  display: block;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  margin: 2px 0 4px;
+}
+
+.attribution:hover {
+  color: var(--primary-light);
+}
+
 .teamBlock {
   margin-bottom: 10px;
 }

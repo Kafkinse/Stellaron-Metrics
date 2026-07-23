@@ -1,3 +1,4 @@
+import lightConeRankings from 'data/lightcone_rankings.json' with { type: 'json' }
 import { Parts } from 'lib/constants/constants'
 import { getCharacterConfig } from 'lib/conditionals/resolver/characterConfigRegistry'
 import { Assets } from 'lib/rendering/assets'
@@ -7,6 +8,10 @@ import styles from 'lib/tabs/tabDatabase/DatabaseTab.module.css'
 import { useMemo } from 'react'
 import { type CharacterId } from 'types/character'
 import { type LightConeId } from 'types/lightCone'
+
+// Prydwen light-cone rankings (used with permission, credited in the UI):
+// { [characterId]: [{ id: lightConeId, percent }] }, best first.
+const rankings = lightConeRankings as Record<string, { id: string, percent: number }[]>
 
 const statIcon = (stat: string) => Assets.getStatIcon(stat, stat.includes('%'))
 
@@ -56,9 +61,17 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
 
   const lcName = (lcId?: LightConeId) => (lcId ? meta.lightCones[lcId]?.name ?? '' : '')
 
-  // Signature light cone plus up to 3 same-path 5★ alternatives.
+  // Light cones: prefer Prydwen's ranked list (by relative DMG %); otherwise
+  // fall back to the signature plus same-path 5★ alternatives.
+  const ranked = rankings[id]
+  const usesPrydwen = !!ranked && ranked.length > 0
   const lightCones = useMemo(() => {
-    const list: { id: LightConeId, signature: boolean }[] = []
+    if (usesPrydwen) {
+      return ranked
+        .filter((r) => meta.lightCones[r.id as LightConeId])
+        .map((r) => ({ id: r.id as LightConeId, signature: r.id === sigLc, percent: r.percent }))
+    }
+    const list: { id: LightConeId, signature: boolean, percent?: number }[] = []
     if (sigLc) list.push({ id: sigLc, signature: true })
     Object.values(meta.lightCones)
       .filter((lc) => lc.path === charPath && lc.rarity === 5 && !lc.unreleased && lc.id !== sigLc)
@@ -66,7 +79,7 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
       .slice(0, 3)
       .forEach((lc) => list.push({ id: lc.id as LightConeId, signature: false }))
     return list
-  }, [id, sigLc, charPath, meta])
+  }, [id, sigLc, charPath, meta, usesPrydwen, ranked])
 
   const relicSets = uniqueRelicCombos(sim?.relicSets ?? [])
   const ornaments = [...new Set(sim?.ornamentSets ?? [])].slice(0, MAX_SETS)
@@ -93,13 +106,19 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
       {lightCones.length > 0 && (
         <>
           <div className={styles.sectionTitle}>Light cones</div>
-          {lightCones.map(({ id: lcId, signature }) => (
+          {lightCones.map(({ id: lcId, signature, percent }) => (
             <div key={lcId} className={styles.setRow}>
               <img src={Assets.getLightConeIconById(lcId)} className={styles.setIcon} />
               <span className={styles.setName}>{lcName(lcId)}</span>
               {signature && <span className={styles.setPieces}>SIG</span>}
+              {percent != null && <span className={styles.setPieces}>{percent}%</span>}
             </div>
           ))}
+          {usesPrydwen && (
+            <a className={styles.attribution} href='https://www.prydwen.gg/star-rail/' target='_blank' rel='noreferrer'>
+              Light cone rankings by Prydwen
+            </a>
+          )}
         </>
       )}
 
