@@ -19,6 +19,13 @@ code {
     font-family: monospace;
 }
 
+/* Display face for headline moments only; body/UI text stays on --font-ui. */
+h1,
+h2 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+
 html,
 #root,
 #app,

@@ -51,7 +51,7 @@
   padding: 8px 4px;
   background: var(--layer-1);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   cursor: pointer;
   color: var(--text-secondary);
   font: inherit;
@@ -95,7 +95,7 @@
   flex-shrink: 0;
   background: var(--layer-1);
   border: var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-card);
   padding: 16px;
   position: sticky;
   top: 12px;

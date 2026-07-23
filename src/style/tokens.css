@@ -1,6 +1,7 @@
 :root {
   /* Font families */
-  --font-ui: system-ui, -apple-system, sans-serif;
+  --font-ui: 'Inter Variable', system-ui, -apple-system, sans-serif;
+  --font-display: 'Sora Variable', 'Inter Variable', system-ui, sans-serif;
   --font-showcase: 'Maven Pro', sans-serif;
 
   /* Layers — elevation stack */
@@ -36,10 +37,12 @@
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 6px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
 
-  /* Fixed accent colors (not seed-derived) — Veritas palette */
-  --color-link: #7fb4ff;
-  --color-accent: #b9a2ff;
+  /* Fixed accent colors (not seed-derived) — ultraviolet palette */
+  --color-link: #b7a4fb;
+  --color-accent: #713dff;
 
   /* Rarity card gradients */
   --rarity-5-start: #8A6700;

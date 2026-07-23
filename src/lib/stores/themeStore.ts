@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 // Veritas theme: purple seed drives the accent, dark surfaces and layers.
-const DEFAULT_SEED = '#B9A2FF'
+const DEFAULT_SEED = '#713DFF'
 
 function isValidColor(color: string): boolean {
   try {

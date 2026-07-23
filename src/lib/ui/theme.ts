@@ -10,7 +10,7 @@ import {
   derivePrimaryPalette,
 } from 'lib/ui/themeColors'
 
-const DEFAULT_SEED = '#B9A2FF'
+const DEFAULT_SEED = '#713DFF'
 
 // Caps dropdown scroll containers to available viewport space to prevent overflow off-screen
 const comboboxMiddlewares = {
@@ -85,22 +85,23 @@ export function createMantineTheme(seed: string): MantineThemeOverride {
       },
       Radio: { defaultProps: { size: 'xs' } },
       SegmentedControl: {
-        defaultProps: { size: 'xs', withItemsBorders: false, radius: 'sm' },
+        defaultProps: { size: 'xs', withItemsBorders: false, radius: 999 },
         styles: {
           root: { backgroundColor: 'rgba(0, 0, 0, 0.18)' },
-          indicator: { borderRadius: 3 },
+          indicator: { borderRadius: 999 },
           label: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
           innerLabel: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
         },
       },
       Button: {
-        defaultProps: { size: 'xs' },
+        defaultProps: { size: 'xs', radius: 999 },
         styles: { label: { fontSize: '14px', fontWeight: 'normal' } },
       },
+      Badge: { defaultProps: { radius: 999 } },
       Pagination: { defaultProps: { size: 'xs' } },
       Slider: { defaultProps: { size: 'xs' } },
       Tabs: { defaultProps: { size: 'xs' } },
-      Modal: { defaultProps: { lockScroll: false, padding: 16, withCloseButton: false } },
+      Modal: { defaultProps: { lockScroll: false, padding: 16, withCloseButton: false, radius: 16 } },
       Drawer: {
         defaultProps: { lockScroll: false, padding: 16, transitionProps: { duration: 150 } },
       },

@@ -8,9 +8,11 @@ const DARK_LIGHTNESS_OFFSETS = [0.70, 0.60, 0.50, 0.40, 0.26, 0.12, 0.10, 0, -0.
 
 const PRIMARY_LIGHTNESS = [0.94, 0.86, 0.76, 0.66, 0.56, 0, 0.40, 0.32, 0.24, 0.16]
 
+// Near-black violet canvas (#0a0118 family): high saturation, very low
+// lightness, so depth comes from borders and glow rather than lighter panels.
 const SURFACE_HUE_OFFSET = 6.6
-const SURFACE_SATURATION = 0.407
-const SURFACE_BASE_LIGHTNESS = 0.159
+const SURFACE_SATURATION = 0.53
+const SURFACE_BASE_LIGHTNESS = 0.055
 
 // Custom layer offsets: 0-2 at 4% steps, then 12% steps from layer-2
 const LAYER_OFFSETS = [0, 0.04, 0.10, 0.20, 0.32, 0.44, 0.56, 0.68, 0.80]

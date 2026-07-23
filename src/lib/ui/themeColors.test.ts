@@ -18,7 +18,7 @@ describe('deriveDarkPalette', () => {
 
   it('dark-7 (body) matches expected value for hue 215.2', () => {
     const palette = deriveDarkPalette(215.2)
-    expect(palette[7]).toBe('#182239')
+    expect(palette[7]).toBe('#070b15')
   })
 
   it('dark-6 (inputs) is lighter than dark-7 (body)', () => {
