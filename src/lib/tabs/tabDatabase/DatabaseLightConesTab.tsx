@@ -123,7 +123,7 @@ export function DatabaseLightConesTab() {
   )
 }
 
-function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void }) {
+export function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void }) {
   const meta = getGameMetadata().lightCones[id]
   const lore = getLightConeLore(id)
   const [superimposition, setSuperimposition] = useState('1')

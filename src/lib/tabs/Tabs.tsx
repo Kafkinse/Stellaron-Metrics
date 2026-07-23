@@ -47,6 +47,7 @@ const WebgpuTab = lazy(() => import('lib/tabs/tabWebgpu/WebgpuTab').then((m) => 
 const DatabaseCharactersTab = lazy(() => import('lib/tabs/tabDatabase/DatabaseCharactersTab').then((m) => ({ default: m.DatabaseCharactersTab })))
 const DatabaseLightConesTab = lazy(() => import('lib/tabs/tabDatabase/DatabaseLightConesTab').then((m) => ({ default: m.DatabaseLightConesTab })))
 const DatabaseRelicsTab = lazy(() => import('lib/tabs/tabDatabase/DatabaseRelicsTab').then((m) => ({ default: m.DatabaseRelicsTab })))
+const DatabaseLeaksTab = lazy(() => import('lib/tabs/tabDatabase/DatabaseLeaksTab').then((m) => ({ default: m.DatabaseLeaksTab })))
 
 const defaultErrorRender = ({ error }: FallbackProps) => <div>Something went wrong: {error instanceof Error ? error.message : String(error)}</div>
 
@@ -65,6 +66,7 @@ const TAB_COMPONENTS: [AppPages, React.ComponentType][] = [
   [AppPages.DATABASE_CHARACTERS, DatabaseCharactersTab],
   [AppPages.DATABASE_LIGHTCONES, DatabaseLightConesTab],
   [AppPages.DATABASE_RELICS, DatabaseRelicsTab],
+  [AppPages.DATABASE_LEAKS, DatabaseLeaksTab],
   [AppPages.WEBGPU_TEST, WebgpuTab],
   [AppPages.METADATA_TEST, MetadataTab],
 ]

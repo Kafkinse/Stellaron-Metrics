@@ -11,9 +11,9 @@ import {
   IconChartRadar,
   IconDiamond,
   IconDiamonds,
+  IconFlask,
   IconHome,
   IconLayoutGrid,
-  IconLink,
   IconList,
   IconSettings,
   IconStarFilled,
@@ -26,7 +26,6 @@ import {
 } from '@tabler/icons-react'
 import { CoffeeIcon } from 'icons/CoffeeIcon'
 import { DiscordIcon } from 'icons/DiscordIcon'
-import { officialOnly } from 'lib/constants/constants'
 import {
   isNewGroupCheck,
   NewFeatureKey,
@@ -294,6 +293,7 @@ export function MenuDrawer({ collapsed }: { collapsed: boolean }) {
         { key: AppPages.DATABASE_CHARACTERS, label: 'Characters', icon: <IconUsers size={16} /> },
         { key: AppPages.DATABASE_LIGHTCONES, label: 'Light Cones', icon: <IconSword size={16} /> },
         { key: AppPages.DATABASE_RELICS, label: 'Relics', icon: <IconDiamonds size={16} /> },
+        { key: AppPages.DATABASE_LEAKS, label: 'Leaks', icon: <IconFlask size={16} /> },
       ],
     },
     {
@@ -303,9 +303,6 @@ export function MenuDrawer({ collapsed }: { collapsed: boolean }) {
         { key: AppPages.CHANGELOG, label: t('Links.Changelog'), icon: <IconList size={16} /> },
         { key: 'link donate', label: t('Links.Kofi'), icon: <CoffeeIcon />, href: 'https://ko-fi.com/kafkinse' },
         { key: 'link discord', label: t('Links.Discord'), icon: <DiscordIcon />, href: 'https://discord.gg/rDmB4Un7qg' },
-        officialOnly
-          ? { key: 'link leaks', label: t('Links.Leaks'), icon: <IconLink size={16} />, href: 'https://fribbels.github.io/hsr-optimizer/' }
-          : { key: 'link leaks free', label: t('Links.Unleak'), icon: <IconLink size={16} />, href: 'https://starrailoptimizer.github.io/' },
       ],
     },
   ], [t])

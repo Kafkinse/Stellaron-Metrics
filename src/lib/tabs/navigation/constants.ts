@@ -33,6 +33,7 @@ export type PageHash =
   | '#database-characters'
   | '#database-lightcones'
   | '#database-relics'
+  | '#leaks'
 
 export enum AppPages {
   HOME = 'HOME',
@@ -52,6 +53,7 @@ export enum AppPages {
   DATABASE_CHARACTERS = 'DATABASE_CHARACTERS',
   DATABASE_LIGHTCONES = 'DATABASE_LIGHTCONES',
   DATABASE_RELICS = 'DATABASE_RELICS',
+  DATABASE_LEAKS = 'DATABASE_LEAKS',
 
   WEBGPU_TEST = 'WEBGPU_TEST',
   METADATA_TEST = 'METADATA_TEST',
@@ -75,6 +77,7 @@ export const PageToHash = {
   [AppPages.DATABASE_CHARACTERS]: '#database-characters',
   [AppPages.DATABASE_LIGHTCONES]: '#database-lightcones',
   [AppPages.DATABASE_RELICS]: '#database-relics',
+  [AppPages.DATABASE_LEAKS]: '#leaks',
 
   [AppPages.WEBGPU_TEST]: '#webgpu',
   [AppPages.METADATA_TEST]: '#metadata',

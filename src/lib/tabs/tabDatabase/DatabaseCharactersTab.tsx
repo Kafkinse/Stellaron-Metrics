@@ -179,7 +179,7 @@ export function DatabaseCharactersTab() {
   )
 }
 
-function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void }) {
+export function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void }) {
   const meta = getGameMetadata().characters[id]
   const lore = getCharacterLore(id)
 
