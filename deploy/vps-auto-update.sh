@@ -3,11 +3,12 @@
 # container only when new commits actually arrived (e.g. after the daily
 # data-sync workflow commits fresh characters / lore).
 #
-# Install on the VPS (adjust the path), then add a cron entry:
+# Install on the VPS (adjust the path), then add a cron entry. The data-sync
+# workflow only runs every 3 days, so a twice-daily pull is plenty:
 #   chmod +x deploy/vps-auto-update.sh
 #   crontab -e
-#   # every 30 min, log to a file:
-#   */30 * * * * /home/user/Stellaron-Metrics/deploy/vps-auto-update.sh >> /var/log/stellaron-update.log 2>&1
+#   # 06:30 and 18:30 UTC, log to a file:
+#   30 6,18 * * * /home/user/Stellaron-Metrics/deploy/vps-auto-update.sh >> /var/log/stellaron-update.log 2>&1
 set -euo pipefail
 
 # Repo root = the directory that contains this script's parent.
