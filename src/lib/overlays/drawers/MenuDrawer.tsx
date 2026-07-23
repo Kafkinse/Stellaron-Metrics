@@ -26,7 +26,6 @@ import {
 } from '@tabler/icons-react'
 import { CoffeeIcon } from 'icons/CoffeeIcon'
 import { DiscordIcon } from 'icons/DiscordIcon'
-import { GithubIcon } from 'icons/GithubIcon'
 import { officialOnly } from 'lib/constants/constants'
 import {
   isNewGroupCheck,
@@ -304,7 +303,6 @@ export function MenuDrawer({ collapsed }: { collapsed: boolean }) {
         { key: AppPages.CHANGELOG, label: t('Links.Changelog'), icon: <IconList size={16} /> },
         { key: 'link donate', label: t('Links.Kofi'), icon: <CoffeeIcon />, href: 'https://ko-fi.com/kafkinse' },
         { key: 'link discord', label: t('Links.Discord'), icon: <DiscordIcon />, href: 'https://discord.gg/rDmB4Un7qg' },
-        { key: 'link github', label: t('Links.Github'), icon: <GithubIcon />, href: 'https://github.com/fribbels/hsr-optimizer' },
         officialOnly
           ? { key: 'link leaks', label: t('Links.Leaks'), icon: <IconLink size={16} />, href: 'https://fribbels.github.io/hsr-optimizer/' }
           : { key: 'link leaks free', label: t('Links.Unleak'), icon: <IconLink size={16} />, href: 'https://starrailoptimizer.github.io/' },
