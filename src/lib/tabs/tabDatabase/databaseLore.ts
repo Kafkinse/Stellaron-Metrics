@@ -14,6 +14,8 @@ export interface LoreAbility {
 
 export interface LoreExtraAbility extends LoreAbility {
   type: string,
+  /** Ally this ability buffs, when the skill targets a specific character. */
+  target?: string,
 }
 
 export interface LoreEidolon {

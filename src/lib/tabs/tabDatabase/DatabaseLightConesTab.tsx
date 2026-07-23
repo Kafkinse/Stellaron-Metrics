@@ -6,6 +6,7 @@ import {
 import {
   IconArrowLeft,
   IconSearch,
+  IconX,
 } from '@tabler/icons-react'
 import { Assets } from 'lib/rendering/assets'
 import { getGameMetadata } from 'lib/state/gameMetadata'
@@ -35,15 +36,15 @@ export function DatabaseLightConesTab() {
   const paths = useMemo(() => [...new Set(lightCones.map((lc) => lc.path))], [lightCones])
 
   const [search, setSearch] = useState('')
-  const [path, setPath] = useState('')
+  const [pathFilter, setPathFilter] = useState<string[]>([])
   const [selectedId, setSelectedId] = useState(() => lightCones[0]?.id ?? '')
   const [detailOpened, setDetailOpened] = useState(false)
 
   const filtered = useMemo(() => lightCones.filter((lc) => {
     if (search && !lc.name.toLowerCase().includes(search.toLowerCase())) return false
-    if (path && lc.path !== path) return false
+    if (pathFilter.length && !pathFilter.includes(lc.path)) return false
     return true
-  }), [lightCones, search, path])
+  }), [lightCones, search, pathFilter])
 
   const selected = lightCones.find((lc) => lc.id === selectedId) ?? filtered[0]
 
@@ -60,7 +61,7 @@ export function DatabaseLightConesTab() {
               onChange={(e) => setSearch(e.currentTarget.value)}
               w={200}
             />
-            <Chip.Group multiple={false} value={path} onChange={(v) => setPath(v === path ? '' : (v ?? ''))}>
+            <Chip.Group multiple value={pathFilter} onChange={setPathFilter}>
               <Group gap={4}>
                 {paths.map((p) => (
                   <Chip key={p} value={p} size='xs'>
@@ -72,6 +73,16 @@ export function DatabaseLightConesTab() {
                 ))}
               </Group>
             </Chip.Group>
+            {pathFilter.length > 0 && (
+              <button
+                className={styles.clearTags}
+                onClick={() => setPathFilter([])}
+                title='Clear filters'
+              >
+                <IconX size={14} />
+                Clear
+              </button>
+            )}
           </div>
 
           {filtered.length === 0

@@ -22832,147 +22832,6 @@
           ]
         },
         {
-          "type": "Memosprite Skill",
-          "name": "Breath Scorches the Shadow",
-          "template": "Consumes this unit's HP to deal Quantum DMG to all enemies, and this turn will not conclude. When using this ability repeatedly, the ability can be enhanced up to 3 times. When HP is #5[i]% or lower, using this ability will actively trigger the ability effect of Memosprite Talent \"Wings Sweep the Ruins.\"",
-          "params": [
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ]
-          ]
-        },
-        {
-          "type": "Memosprite Skill",
-          "name": "Breath Scorches the Shadow",
-          "template": "Consumes this unit's HP to deal Quantum DMG to all enemies, and this turn will not conclude. When using this ability repeatedly, the ability can be enhanced up to 3 times. When HP is #5[i]% or lower, using this ability will actively trigger the ability effect of Memosprite Talent \"Wings Sweep the Ruins.\"",
-          "params": [
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ],
-            [
-              0.25
-            ]
-          ]
-        },
-        {
-          "type": "Memosprite Skill",
-          "name": "Wings Sweep the Ruins",
-          "template": "Consumes all HP and deals #2[i] instance(s) of DMG, with each instance dealing Quantum DMG equal to #1[f1]% of Castorice's Max HP to one random enemy. At the same time, restores HP by an amount equal to #3[i]% of Castorice's Max HP plus #4[i] for all allies.",
-          "params": [
-            [
-              0.2,
-              6,
-              0.03,
-              400
-            ],
-            [
-              0.24,
-              6,
-              0.036,
-              480
-            ],
-            [
-              0.28,
-              6,
-              0.042,
-              560
-            ],
-            [
-              0.32,
-              6,
-              0.048,
-              640
-            ],
-            [
-              0.36,
-              6,
-              0.054,
-              720
-            ],
-            [
-              0.4,
-              6,
-              0.06,
-              800
-            ],
-            [
-              0.44,
-              6,
-              0.066,
-              880
-            ],
-            [
-              0.48,
-              6,
-              0.072,
-              960
-            ],
-            [
-              0.52,
-              6,
-              0.078,
-              1040
-            ],
-            [
-              0.56,
-              6,
-              0.084,
-              1120
-            ]
-          ]
-        },
-        {
           "type": "Skill",
           "name": "Boneclaw, Doomdrake's Embrace",
           "template": "Consumes #1[i]% of the current HP of all allies (except Netherwing). Castorice and Netherwing launch Joint ATK on the targets, dealing Quantum DMG equal to #2[f1]% and #3[f1]% of Castorice's Max HP to all enemies.\nIf the current HP is insufficient, reduces the current HP down to 1.",
@@ -27138,7 +26997,8 @@
               1.008,
               1
             ]
-          ]
+          ],
+          "target": "Trailblazer (Remembrance)"
         },
         {
           "type": "Memosprite Skill",
@@ -27195,7 +27055,8 @@
               1.008,
               0.504
             ]
-          ]
+          ],
+          "target": "Aglaea"
         },
         {
           "type": "Memosprite Skill",
@@ -27252,7 +27113,8 @@
               0.168,
               3
             ]
-          ]
+          ],
+          "target": "Tribbie"
         },
         {
           "type": "Memosprite Skill",
@@ -27299,7 +27161,8 @@
               2.8,
               1
             ]
-          ]
+          ],
+          "target": "Mydei"
         },
         {
           "type": "Memosprite Skill",
@@ -27386,7 +27249,8 @@
               0.0067,
               2
             ]
-          ]
+          ],
+          "target": "Castorice"
         },
         {
           "type": "Memosprite Skill",
@@ -27453,7 +27317,8 @@
               0.84,
               1
             ]
-          ]
+          ],
+          "target": "Anaxa"
         },
         {
           "type": "Memosprite Skill",
@@ -27500,7 +27365,8 @@
               1.008,
               33.6
             ]
-          ]
+          ],
+          "target": "Hyacine"
         },
         {
           "type": "Memosprite Skill",
@@ -27557,7 +27423,8 @@
               0.28,
               0.168
             ]
-          ]
+          ],
+          "target": "Cipher"
         },
         {
           "type": "Memosprite Skill",
@@ -27674,7 +27541,8 @@
               6,
               4
             ]
-          ]
+          ],
+          "target": "Phainon"
         },
         {
           "type": "Memosprite Skill",
@@ -27741,7 +27609,8 @@
               1.12,
               60
             ]
-          ]
+          ],
+          "target": "Hysilens"
         },
         {
           "type": "Memosprite Skill",
@@ -27788,7 +27657,8 @@
               0.42,
               1
             ]
-          ]
+          ],
+          "target": "Cerydra"
         },
         {
           "type": "Memosprite Skill",
@@ -27845,7 +27715,8 @@
               1,
               0.168
             ]
-          ]
+          ],
+          "target": "Evernight"
         },
         {
           "type": "Memosprite Skill",
@@ -27922,7 +27793,8 @@
               1.12,
               1.5
             ]
-          ]
+          ],
+          "target": "Dan Heng • Permansor Terrae"
         },
         {
           "type": "Memosprite Skill",

@@ -76,6 +76,21 @@ function toAbility(s) {
   }
 }
 
+// Some memosprite skills buff a specific ally named in the text
+// ("...used on Aglaea, ..."). Extract that target so the UI can offer a
+// per-ally picker (e.g. Cyrene's "Ode to ..." set). Untargeted skills return
+// undefined and render as normal extra abilities.
+function detectTarget(template) {
+  const m = template.match(/(?:used on|using on) (.+?)\s*[,.]/i)
+  return m ? m[1].trim() : undefined
+}
+
+// Widest parameter row across levels — used to pick the richest of several
+// same-named variants (enhanced-state stubs ship truncated params).
+function paramWidth(a) {
+  return (a.params ?? []).reduce((max, row) => Math.max(max, row?.length ?? 0), 0)
+}
+
 const EMPTY_ABILITY = { name: '', template: '', params: [] }
 
 function buildAbilities(skillIds, preferRevamp) {
@@ -99,7 +114,8 @@ function buildAbilities(skillIds, preferRevamp) {
       if (!byKey.has(key)) byKey.set(key, [])
       byKey.get(key).push(entry)
     } else {
-      extra.push({ type: entry.type, name: entry.name, template: entry.template, params: entry.params })
+      const target = detectTarget(entry.template)
+      extra.push({ type: entry.type, name: entry.name, template: entry.template, params: entry.params, ...(target ? { target } : {}) })
     }
   }
   for (const [key, variants] of byKey) {
@@ -116,10 +132,25 @@ function buildAbilities(skillIds, preferRevamp) {
     for (const v of preferredPool) {
       if (seen.has(v.name)) continue
       seen.add(v.name)
-      extra.push({ type: v.type, name: v.name, template: v.template, params: v.params })
+      const target = detectTarget(v.template)
+      extra.push({ type: v.type, name: v.name, template: v.template, params: v.params, ...(target ? { target } : {}) })
     }
   }
-  return { abilities, extra }
+  // Collapse same-named extra abilities: enhanced-state variants ship as stubs
+  // with truncated params (which drop placeholder values), so keep the richest
+  // one per name — widest param row, then most levels.
+  const bestByName = new Map()
+  for (const e of extra) {
+    const prev = bestByName.get(e.name)
+    if (
+      !prev
+      || paramWidth(e) > paramWidth(prev)
+      || (paramWidth(e) === paramWidth(prev) && e.params.length > prev.params.length)
+    ) {
+      bestByName.set(e.name, e)
+    }
+  }
+  return { abilities, extra: [...bestByName.values()] }
 }
 
 /**

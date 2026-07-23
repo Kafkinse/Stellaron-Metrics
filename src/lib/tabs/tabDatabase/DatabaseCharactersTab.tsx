@@ -7,6 +7,7 @@ import {
 import {
   IconArrowLeft,
   IconSearch,
+  IconX,
 } from '@tabler/icons-react'
 import { Assets } from 'lib/rendering/assets'
 import { getGameMetadata } from 'lib/state/gameMetadata'
@@ -15,6 +16,7 @@ import {
   ABILITY_SLOTS,
   getCharacterLore,
   type LoreAbility,
+  type LoreExtraAbility,
   renderDescriptionSegments,
 } from 'lib/tabs/tabDatabase/databaseLore'
 import React, {
@@ -56,19 +58,21 @@ export function DatabaseCharactersTab() {
   const paths = useMemo(() => [...new Set(characters.map((c) => c.path))], [characters])
 
   const [search, setSearch] = useState('')
-  const [element, setElement] = useState('')
-  const [path, setPath] = useState('')
+  const [elementFilter, setElementFilter] = useState<string[]>([])
+  const [pathFilter, setPathFilter] = useState<string[]>([])
   const [selectedId, setSelectedId] = useState(() => characters[0]?.id ?? '')
   // On narrow screens only one pane is shown at a time; opening a character
   // hides the list so the details page can be read comfortably.
   const [detailOpened, setDetailOpened] = useState(false)
 
+  const hasFilters = elementFilter.length > 0 || pathFilter.length > 0
+
   const filtered = useMemo(() => characters.filter((c) => {
     if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false
-    if (element && c.element !== element) return false
-    if (path && c.path !== path) return false
+    if (elementFilter.length && !elementFilter.includes(c.element)) return false
+    if (pathFilter.length && !pathFilter.includes(c.path)) return false
     return true
-  }), [characters, search, element, path])
+  }), [characters, search, elementFilter, pathFilter])
 
   const selected = characters.find((c) => c.id === selectedId) ?? filtered[0]
 
@@ -85,7 +89,7 @@ export function DatabaseCharactersTab() {
               onChange={(e) => setSearch(e.currentTarget.value)}
               w={200}
             />
-            <Chip.Group multiple={false} value={element} onChange={(v) => setElement(v === element ? '' : (v ?? ''))}>
+            <Chip.Group multiple value={elementFilter} onChange={setElementFilter}>
               <Group gap={4}>
                 {elements.map((e) => (
                   <Chip key={e} value={e} size='xs'>
@@ -97,7 +101,7 @@ export function DatabaseCharactersTab() {
                 ))}
               </Group>
             </Chip.Group>
-            <Chip.Group multiple={false} value={path} onChange={(v) => setPath(v === path ? '' : (v ?? ''))}>
+            <Chip.Group multiple value={pathFilter} onChange={setPathFilter}>
               <Group gap={4}>
                 {paths.map((p) => (
                   <Chip key={p} value={p} size='xs'>
@@ -109,6 +113,19 @@ export function DatabaseCharactersTab() {
                 ))}
               </Group>
             </Chip.Group>
+            {hasFilters && (
+              <button
+                className={styles.clearTags}
+                onClick={() => {
+                  setElementFilter([])
+                  setPathFilter([])
+                }}
+                title='Clear filters'
+              >
+                <IconX size={14} />
+                Clear
+              </button>
+            )}
           </div>
 
           {filtered.length === 0
@@ -145,6 +162,11 @@ export function DatabaseCharactersTab() {
 function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void }) {
   const meta = getGameMetadata().characters[id]
   const lore = getCharacterLore(id)
+
+  // Abilities that buff a named ally (e.g. Cyrene's "Ode to ...") get their own
+  // per-ally picker; the rest render inline like normal extra abilities.
+  const targetedExtras = lore?.extraAbilities?.filter((a) => a.target) ?? []
+  const regularExtras = lore?.extraAbilities?.filter((a) => !a.target) ?? []
 
   return (
     <div className={styles.detailPane}>
@@ -183,9 +205,16 @@ function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void 
       {ABILITY_SLOTS.map(({ key, label }) => (
         <AbilityBlock key={`${id}-${key}`} tag={label} ability={lore?.abilities[key]} />
       ))}
-      {lore?.extraAbilities?.map((ability, i) => (
+      {regularExtras.map((ability, i) => (
         <AbilityBlock key={`${id}-extra-${i}`} tag={ability.type} ability={ability} />
       ))}
+
+      {targetedExtras.length > 0 && (
+        <>
+          <div className={styles.sectionTitle}>Buffs by ally</div>
+          <HeirBuffPicker abilities={targetedExtras} />
+        </>
+      )}
 
       <div className={styles.sectionTitle}>Traces</div>
       {lore?.majorTraces?.length
@@ -229,10 +258,48 @@ function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void 
   )
 }
 
-function AbilityBlock({ tag, ability }: { tag: string, ability: LoreAbility | undefined }) {
-  const [level, setLevel] = useState(1)
-  const maxLevel = ability?.params.length ?? 0
+/**
+ * Picker for abilities that buff a specific ally (e.g. Cyrene's "Ode to ..."
+ * set). Pick an ally by their portrait to read that ally's buff.
+ */
+function HeirBuffPicker({ abilities }: { abilities: LoreExtraAbility[] }) {
+  const [index, setIndex] = useState(0)
+  const idByName = useMemo(() => {
+    const map = new Map<string, CharacterId>()
+    for (const c of Object.values(getGameMetadata().characters)) {
+      if (c.name) map.set(c.name.toLowerCase(), c.id)
+    }
+    return map
+  }, [])
 
+  const selected = abilities[Math.min(index, abilities.length - 1)]
+
+  return (
+    <div className={styles.entryBlock}>
+      <div className={styles.heirPicker}>
+        {abilities.map((ability, i) => {
+          const cid = ability.target ? idByName.get(ability.target.toLowerCase()) : undefined
+          return (
+            <button
+              key={ability.name}
+              className={`${styles.heirIconBtn} ${i === index ? styles.heirIconActive : ''}`}
+              onClick={() => setIndex(i)}
+              title={ability.target}
+            >
+              {cid
+                ? <img src={Assets.getCharacterAvatarById(cid)} className={styles.heirIcon} loading='lazy' />
+                : <span className={styles.heirIconFallback}>{ability.target?.[0] ?? '?'}</span>}
+            </button>
+          )
+        })}
+      </div>
+      <div className={styles.entryTag}>{selected.target}</div>
+      <AbilityBlockBody key={selected.name} ability={selected} />
+    </div>
+  )
+}
+
+function AbilityBlock({ tag, ability }: { tag: string, ability: LoreAbility | undefined }) {
   if (!ability?.name && !ability?.template) {
     return (
       <div className={styles.entryBlock}>
@@ -245,6 +312,19 @@ function AbilityBlock({ tag, ability }: { tag: string, ability: LoreAbility | un
   return (
     <div className={styles.entryBlock}>
       <div className={styles.entryTag}>{tag}</div>
+      <AbilityBlockBody ability={ability} />
+    </div>
+  )
+}
+
+/** Ability name, level slider and description — the body shared by the ability
+ * block and the per-ally buff picker. Owns its own level state. */
+function AbilityBlockBody({ ability }: { ability: LoreAbility }) {
+  const [level, setLevel] = useState(1)
+  const maxLevel = ability.params.length
+
+  return (
+    <>
       <div className={styles.entryName}>{ability.name}</div>
       {maxLevel > 1 && (
         <div className={styles.levelRow}>
@@ -261,7 +341,7 @@ function AbilityBlock({ tag, ability }: { tag: string, ability: LoreAbility | un
         </div>
       )}
       <AbilityDescription ability={ability} level={level} />
-    </div>
+    </>
   )
 }
 

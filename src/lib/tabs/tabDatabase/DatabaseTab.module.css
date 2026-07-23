@@ -37,6 +37,28 @@
   letter-spacing: 0.4px;
 }
 
+/* Clears all active tag filters at once (chips also toggle off individually). */
+.clearTags {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 10px;
+  background: var(--layer-inset);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color 0.1s ease, color 0.1s ease;
+}
+
+.clearTags:hover {
+  border-color: var(--primary-hover);
+  color: var(--text-primary);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
@@ -209,7 +231,7 @@
 
 /* Level-dependent numbers inside ability / superimposition descriptions. */
 .paramValue {
-  color: var(--primary-light);
+  color: #66e0ff;
   font-weight: 600;
 }
 
@@ -284,6 +306,49 @@
   display: flex;
   gap: 10px;
   align-items: flex-start;
+}
+
+/* Per-ally buff picker (e.g. Cyrene's "Ode to ..." set). */
+.heirPicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.heirIconBtn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: var(--layer-0);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.1s ease, transform 0.1s ease;
+}
+
+.heirIconBtn:hover {
+  transform: translateY(-1px);
+}
+
+.heirIconActive {
+  border-color: var(--primary-default);
+}
+
+.heirIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heirIconFallback {
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .eidolonIcon {
