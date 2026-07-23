@@ -17,8 +17,11 @@ const gameData = JSON.parse(
 )
 
 // Character name -> Prydwen slug. Most are the lowercased, hyphenated name;
-// add exceptions here as they surface from failed fetches.
-const SLUG_OVERRIDES = {}
+// these are the exceptions Prydwen spells differently.
+const SLUG_OVERRIDES = {
+  'Dan Heng • Imbibitor Lunae': 'imbibitor-lunae',
+  'Topaz & Numby': 'topaz-numby',
+}
 
 const MAX = 6
 
@@ -28,6 +31,15 @@ function toSlug(name) {
     .replace(/[•’'.]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
+}
+
+// Prydwen has one page per Trailblazer path, e.g. trailblazer-harmony.
+function slugFor(character) {
+  if (SLUG_OVERRIDES[character.name]) return SLUG_OVERRIDES[character.name]
+  if (character.name === 'Trailblazer' && character.path) {
+    return `trailblazer-${character.path.toLowerCase()}`
+  }
+  return toSlug(character.name)
 }
 
 function stripToText(html) {
@@ -115,7 +127,7 @@ let ok = 0
 const missing = []
 for (const [id, character] of Object.entries(gameData.characters)) {
   if (character?.unreleased || !character.name) continue
-  const slug = SLUG_OVERRIDES[character.name] ?? toSlug(character.name)
+  const slug = slugFor(character)
   try {
     const html = await fetchCharacterPage(slug)
     if (!html) {
