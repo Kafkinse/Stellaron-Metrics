@@ -1,4 +1,4 @@
-import lightConeRankings from 'data/lightcone_rankings.json' with { type: 'json' }
+import prydwenRankings from 'data/prydwen_rankings.json' with { type: 'json' }
 import { Parts } from 'lib/constants/constants'
 import { getCharacterConfig } from 'lib/conditionals/resolver/characterConfigRegistry'
 import { Assets } from 'lib/rendering/assets'
@@ -9,9 +9,11 @@ import { useMemo } from 'react'
 import { type CharacterId } from 'types/character'
 import { type LightConeId } from 'types/lightCone'
 
-// Prydwen light-cone rankings (used with permission, credited in the UI):
-// { [characterId]: [{ id: lightConeId, percent }] }, best first.
-const rankings = lightConeRankings as Record<string, { id: string, percent: number }[]>
+// Prydwen rankings (used with permission, credited in the UI). We store only
+// the ORDER — which light cone / set is ranked above which — never their
+// numbers or write-ups.
+type Ranking = { lightCones: string[], relics: string[], ornaments: string[] }
+const rankings = prydwenRankings as Record<string, Ranking>
 
 const statIcon = (stat: string) => Assets.getStatIcon(stat, stat.includes('%'))
 
@@ -49,8 +51,19 @@ function uniqueRelicCombos(combos: string[][]): string[][] {
   return out
 }
 
-/** Recommended light cone(s), relics, main/substats and teams for a character,
- * from the same scoring metadata the optimizer's DPS benchmark uses. */
+function SetRow({ set, part, pieces }: { set: string, part: string, pieces: string }) {
+  return (
+    <div className={styles.setRow}>
+      <img src={Assets.getSetImage(set, part, true)} className={styles.setIcon} title={set} />
+      <span className={styles.setName}>{set}</span>
+      <span className={styles.setPieces}>{pieces}</span>
+    </div>
+  )
+}
+
+/** Recommended light cone(s), relics, main/substats and teams for a character.
+ * Light cone / relic / ornament order follows Prydwen's ranking when available
+ * (with a credit); everything else comes from the optimizer's scoring metadata. */
 export function CharacterBuild({ id }: { id: CharacterId }) {
   const meta = getGameMetadata()
   const config = getCharacterConfig(id)
@@ -58,20 +71,18 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
   const sim = scoring.simulation
   const sigLc = config?.defaultLightCone
   const charPath = meta.characters[id]?.path
+  const ranked = rankings[id]
 
   const lcName = (lcId?: LightConeId) => (lcId ? meta.lightCones[lcId]?.name ?? '' : '')
 
-  // Light cones: prefer Prydwen's ranked list (by relative DMG %); otherwise
-  // fall back to the signature plus same-path 5★ alternatives.
-  const ranked = rankings[id]
-  const usesPrydwen = !!ranked && ranked.length > 0
+  // Light cones: Prydwen order if present, else signature + same-path 5★.
   const lightCones = useMemo(() => {
-    if (usesPrydwen) {
-      return ranked
-        .filter((r) => meta.lightCones[r.id as LightConeId])
-        .map((r) => ({ id: r.id as LightConeId, signature: r.id === sigLc, percent: r.percent }))
+    if (ranked?.lightCones?.length) {
+      return ranked.lightCones
+        .filter((lcId) => meta.lightCones[lcId as LightConeId])
+        .map((lcId) => ({ id: lcId as LightConeId, signature: lcId === sigLc }))
     }
-    const list: { id: LightConeId, signature: boolean, percent?: number }[] = []
+    const list: { id: LightConeId, signature: boolean }[] = []
     if (sigLc) list.push({ id: sigLc, signature: true })
     Object.values(meta.lightCones)
       .filter((lc) => lc.path === charPath && lc.rarity === 5 && !lc.unreleased && lc.id !== sigLc)
@@ -79,13 +90,11 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
       .slice(0, 3)
       .forEach((lc) => list.push({ id: lc.id as LightConeId, signature: false }))
     return list
-  }, [id, sigLc, charPath, meta, usesPrydwen, ranked])
+  }, [id, sigLc, charPath, meta, ranked])
 
-  const relicSets = uniqueRelicCombos(sim?.relicSets ?? [])
-  const ornaments = [...new Set(sim?.ornamentSets ?? [])].slice(0, MAX_SETS)
+  const scoringRelics = uniqueRelicCombos(sim?.relicSets ?? [])
+  const scoringOrnaments = [...new Set(sim?.ornamentSets ?? [])].slice(0, MAX_SETS)
 
-  // Team variations: prefer the curated leaderboard teams, else the single
-  // recommended team.
   const teams: { characterId: CharacterId, lightCone?: LightConeId }[][] = useMemo(() => {
     if (sim?.leaderboardTeams?.length) {
       return sim.leaderboardTeams.map((team) =>
@@ -106,50 +115,48 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
       {lightCones.length > 0 && (
         <>
           <div className={styles.sectionTitle}>Light cones</div>
-          {lightCones.map(({ id: lcId, signature, percent }) => (
+          {lightCones.map(({ id: lcId, signature }) => (
             <div key={lcId} className={styles.setRow}>
               <img src={Assets.getLightConeIconById(lcId)} className={styles.setIcon} />
               <span className={styles.setName}>{lcName(lcId)}</span>
               {signature && <span className={styles.setPieces}>SIG</span>}
-              {percent != null && <span className={styles.setPieces}>{percent}%</span>}
             </div>
           ))}
-          {usesPrydwen && (
-            <a className={styles.attribution} href='https://www.prydwen.gg/star-rail/' target='_blank' rel='noreferrer'>
-              Light cone rankings by Prydwen
-            </a>
-          )}
         </>
       )}
 
-      {relicSets.length > 0 && (
+      {(ranked?.relics?.length || scoringRelics.length > 0) && (
         <>
           <div className={styles.sectionTitle}>Relic sets</div>
-          {relicSets.map((combo, i) => (
-            <div key={i} className={styles.setRow}>
-              <span className={styles.setIcons}>
-                {combo.map((set, j) => (
-                  <img key={j} src={Assets.getSetImage(set, Parts.Head, true)} className={styles.setIcon} title={set} />
-                ))}
-              </span>
-              <span className={styles.setName}>{combo.join(' + ')}</span>
-              <span className={styles.setPieces}>{combo.length === 1 ? '4PC' : '2+2'}</span>
-            </div>
+          {ranked?.relics?.length
+            ? ranked.relics.map((set) => <SetRow key={set} set={set} part={Parts.Head} pieces='4PC' />)
+            : scoringRelics.map((combo, i) => (
+              <div key={i} className={styles.setRow}>
+                <span className={styles.setIcons}>
+                  {combo.map((set, j) => (
+                    <img key={j} src={Assets.getSetImage(set, Parts.Head, true)} className={styles.setIcon} title={set} />
+                  ))}
+                </span>
+                <span className={styles.setName}>{combo.join(' + ')}</span>
+                <span className={styles.setPieces}>{combo.length === 1 ? '4PC' : '2+2'}</span>
+              </div>
+            ))}
+        </>
+      )}
+
+      {(ranked?.ornaments?.length || scoringOrnaments.length > 0) && (
+        <>
+          <div className={styles.sectionTitle}>Planar ornaments</div>
+          {(ranked?.ornaments?.length ? ranked.ornaments : scoringOrnaments).map((set) => (
+            <SetRow key={set} set={set} part={Parts.PlanarSphere} pieces='2PC' />
           ))}
         </>
       )}
 
-      {ornaments.length > 0 && (
-        <>
-          <div className={styles.sectionTitle}>Planar ornaments</div>
-          {ornaments.map((set, i) => (
-            <div key={i} className={styles.setRow}>
-              <img src={Assets.getSetImage(set, Parts.PlanarSphere, true)} className={styles.setIcon} title={set} />
-              <span className={styles.setName}>{set}</span>
-              <span className={styles.setPieces}>2PC</span>
-            </div>
-          ))}
-        </>
+      {ranked && (
+        <a className={styles.attribution} href='https://www.prydwen.gg/star-rail/' target='_blank' rel='noreferrer'>
+          Rankings by Prydwen
+        </a>
       )}
 
       {scoring.parts && (

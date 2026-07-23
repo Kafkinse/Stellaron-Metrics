@@ -1,12 +1,13 @@
-// Generates src/data/lightcone_rankings.json — a per-character light-cone
-// ranking scraped from Prydwen (https://www.prydwen.gg), used with the site
-// owner's permission and credited in the UI.
+// Generates src/data/prydwen_rankings.json — per-character ORDER of the best
+// light cones, relic sets and planar ornaments, scraped from Prydwen
+// (https://www.prydwen.gg) with the site owner's permission and credited in
+// the UI.
 //
 //   node scripts/gen-prydwen-rankings.mjs
 //
-// We extract ONLY factual ranking data: the light cone and its relative
-// performance percentage. Prydwen's written analysis / usage stats are their
-// editorial content and are deliberately NOT scraped or stored.
+// We keep ONLY the ordering (which cone/set is ranked above which). Prydwen's
+// performance percentages, usage stats and written analysis are their content
+// and are deliberately not stored — we sort by their numbers, then drop them.
 import { readFileSync, writeFileSync } from 'node:fs'
 
 const BASE = 'https://www.prydwen.gg/star-rail/characters'
@@ -18,6 +19,8 @@ const gameData = JSON.parse(
 // Character name -> Prydwen slug. Most are the lowercased, hyphenated name;
 // add exceptions here as they surface from failed fetches.
 const SLUG_OVERRIDES = {}
+
+const MAX = 6
 
 function toSlug(name) {
   return name
@@ -39,14 +42,12 @@ function stripToText(html) {
     .replace(/\s+/g, ' ')
 }
 
-function escapeRegExp(s) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
 const PERCENT = /(\d{1,3}(?:\.\d+)?)\s*%/g
 
-// For a light cone name found in the ranking region, associate the nearest
-// percentage that precedes it (Prydwen prints "125.50%" then the cone name).
+// Nearest percentage that precedes a name (Prydwen prints "100.00%" then the
+// item), within the same block.
 function percentBeforeIndex(text, nameIndex) {
   let best = null
   PERCENT.lastIndex = 0
@@ -55,9 +56,38 @@ function percentBeforeIndex(text, nameIndex) {
     if (m.index > nameIndex) break
     best = { value: Number(m[1]), index: m.index }
   }
-  // Only trust a percentage that's reasonably close to the name (same block).
   if (best && nameIndex - best.index < 400) return best.value
   return null
+}
+
+// Ordered ids/names for a set of candidates found within a text region.
+function orderByPercent(region, candidates) {
+  const found = []
+  for (const { key, name } of candidates) {
+    const idx = region.search(new RegExp(escapeRegExp(name)))
+    if (idx === -1) continue
+    const percent = percentBeforeIndex(region, idx)
+    if (percent == null) continue
+    found.push({ key, percent })
+  }
+  const seen = new Set()
+  return found
+    .sort((a, b) => b.percent - a.percent)
+    .filter((r) => (seen.has(r.key) ? false : seen.add(r.key)))
+    .slice(0, MAX)
+    .map((r) => r.key)
+}
+
+function sliceRegion(text, startRe, endRes) {
+  const start = text.search(startRe)
+  if (start === -1) return null
+  const after = text.slice(start)
+  let end = after.length
+  for (const re of endRes) {
+    const i = after.slice(1).search(re)
+    if (i !== -1) end = Math.min(end, i + 1)
+  }
+  return after.slice(0, end)
 }
 
 async function fetchCharacterPage(slug) {
@@ -68,37 +98,15 @@ async function fetchCharacterPage(slug) {
   return res.text()
 }
 
-function rankingsFromText(text, coneNames) {
-  // Narrow to the "Best Light Cones" region so cone names mentioned elsewhere
-  // (teams, synergies) don't get picked up.
-  const start = text.search(/best light cones/i)
-  if (start === -1) return []
-  const after = text.slice(start + 16)
-  const endMatch = after.search(/best relics|best relic sets|best planar|best team|teams? & synerg|final comments/i)
-  const region = endMatch === -1 ? after : after.slice(0, endMatch)
-
-  const found = []
-  for (const { id, name } of coneNames) {
-    const idx = region.search(new RegExp(escapeRegExp(name)))
-    if (idx === -1) continue
-    const percent = percentBeforeIndex(region, idx)
-    if (percent == null) continue
-    found.push({ id, percent })
-  }
-  // Highest performance first; de-dupe by cone id.
-  const seen = new Set()
-  return found
-    .sort((a, b) => b.percent - a.percent)
-    .filter((r) => (seen.has(r.id) ? false : seen.add(r.id)))
-}
-
-const lightCones = Object.values(gameData.lightCones)
+// Candidate lists from our own data.
 const conesByPath = new Map()
-for (const lc of lightCones) {
+for (const lc of Object.values(gameData.lightCones)) {
   if (!lc.path) continue
   if (!conesByPath.has(lc.path)) conesByPath.set(lc.path, [])
-  conesByPath.get(lc.path).push({ id: String(lc.id), name: lc.name })
+  conesByPath.get(lc.path).push({ key: String(lc.id), name: lc.name })
 }
+const cavernSets = gameData.relics.filter((r) => Number(r.id) < 300).map((r) => ({ key: r.name, name: r.name }))
+const planarSets = gameData.relics.filter((r) => Number(r.id) >= 300).map((r) => ({ key: r.name, name: r.name }))
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 
@@ -106,35 +114,39 @@ const out = {}
 let ok = 0
 const missing = []
 for (const [id, character] of Object.entries(gameData.characters)) {
-  if (character?.unreleased) continue
-  const name = character.name
-  if (!name) continue
-  const slug = SLUG_OVERRIDES[name] ?? toSlug(name)
-  const coneNames = conesByPath.get(character.path) ?? []
-  if (coneNames.length === 0) continue
+  if (character?.unreleased || !character.name) continue
+  const slug = SLUG_OVERRIDES[character.name] ?? toSlug(character.name)
   try {
     const html = await fetchCharacterPage(slug)
     if (!html) {
-      missing.push(`${name} (${slug})`)
+      missing.push(`${character.name} (404 ${slug})`)
       continue
     }
-    const ranking = rankingsFromText(stripToText(html), coneNames)
-    if (ranking.length > 0) {
-      out[id] = ranking
+    const text = stripToText(html)
+    const lcRegion = sliceRegion(text, /best light cones/i, [/best relic/i, /best stats/i, /best team/i]) ?? ''
+    const relicRegion = sliceRegion(text, /best relic/i, [/best stats/i, /best team/i, /synerg/i]) ?? ''
+
+    const entry = {
+      lightCones: orderByPercent(lcRegion, conesByPath.get(character.path) ?? []),
+      relics: orderByPercent(relicRegion, cavernSets),
+      ornaments: orderByPercent(relicRegion, planarSets),
+    }
+    if (entry.lightCones.length || entry.relics.length || entry.ornaments.length) {
+      out[id] = entry
       ok++
     } else {
-      missing.push(`${name} (no ranking parsed)`)
+      missing.push(`${character.name} (nothing parsed)`)
     }
   } catch (e) {
-    missing.push(`${name} (${e.message})`)
+    missing.push(`${character.name} (${e.message})`)
   }
-  await sleep(300) // be gentle with Prydwen
+  await sleep(300)
 }
 
 writeFileSync(
-  new URL('../src/data/lightcone_rankings.json', import.meta.url),
+  new URL('../src/data/prydwen_rankings.json', import.meta.url),
   JSON.stringify(out, null, 2),
 )
 
-console.log(`lightcone rankings: ${ok} characters`)
+console.log(`prydwen rankings: ${ok} characters`)
 if (missing.length) console.log('missing / unparsed:', missing.join(', '))
