@@ -36,7 +36,7 @@ function rarityIconClass(rarity: number) {
 export function DatabaseLightConesTab() {
   const lightCones = useMemo(() =>
     Object.values(getGameMetadata().lightCones)
-      .filter((lc) => !lc.unreleased)
+      .filter((lc) => !lc.unreleased || getLightConeLore(lc.id))
       .sort((a, b) => b.rarity - a.rarity || a.name.localeCompare(b.name)), [])
 
   const paths = useMemo(() => [...new Set(lightCones.map((lc) => lc.path))], [lightCones])
@@ -104,6 +104,7 @@ export function DatabaseLightConesTab() {
                       setDetailOpened(true)
                     }}
                   >
+                    {lc.unreleased && <span className={styles.betaBadge}>BETA</span>}
                     <img src={Assets.getLightConeIconById(lc.id)} className={`${styles.cardIcon} ${rarityIconClass(lc.rarity)}`} loading='lazy' />
                     <span className={styles.cardName}>
                       <span className={rarityClass(lc.rarity)}>{'★'.repeat(lc.rarity)}</span>
@@ -137,10 +138,14 @@ function LightConeDetails({ id, onBack }: { id: LightConeId, onBack: () => void 
       <div className={styles.detailHeader}>
         <img src={Assets.getLightConeIconById(id)} className={`${styles.detailPortrait} ${rarityIconClass(meta.rarity)}`} />
         <div>
-          <h3 className={styles.detailName}>{meta.name}</h3>
+          <h3 className={styles.detailName}>
+            {meta.name}
+            {meta.unreleased && <span className={styles.betaBadgeInline}>BETA</span>}
+          </h3>
           <div className={styles.detailMeta}>
             <span className={rarityClass(meta.rarity)}>{'★'.repeat(meta.rarity)}</span>
           </div>
+          {meta.unreleased && <div className={styles.betaNote}>Datamined — numbers may change</div>}
           <div className={styles.detailMeta}>
             <img src={Assets.getPath(meta.path)} className={styles.metaIcon} />
             {meta.path}

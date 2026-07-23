@@ -197,7 +197,8 @@ const characters = {}
 let charsMissing = []
 for (const id of Object.keys(gameData.characters)) {
   const meta = gameData.characters[id]
-  if (meta?.unreleased) continue
+  // Unreleased (beta/leak) characters are kept — StarRailRes carries their
+  // datamined kit ahead of release, and the UI badges them as beta.
   if (deprecatedBases.has(id)) continue
   const baseId = id.replace(/b\d+$/, '')
   const srr = srrCharacters[baseId]
@@ -211,6 +212,7 @@ for (const id of Object.keys(gameData.characters)) {
     name: meta?.name ?? srr.name ?? '',
     path: meta?.path ?? '',
     element: meta?.element ?? '',
+    ...(meta?.unreleased ? { beta: true } : {}),
     abilities,
     ...(extra.length ? { extraAbilities: extra } : {}),
     majorTraces: buildMajorTraces(baseId),
@@ -223,7 +225,6 @@ const lightCones = {}
 let lcMissing = []
 for (const id of Object.keys(gameData.lightCones)) {
   const meta = gameData.lightCones[id]
-  if (meta?.unreleased) continue
   const rank = srrLcRanks[id]
   if (!rank) {
     lcMissing.push(`${id} (${meta?.name ?? '?'})`)
@@ -233,6 +234,7 @@ for (const id of Object.keys(gameData.lightCones)) {
     name: meta?.name ?? srrLcs[id]?.name ?? '',
     path: meta?.path ?? '',
     rarity: meta?.rarity ?? srrLcs[id]?.rarity ?? 0,
+    ...(meta?.unreleased ? { beta: true } : {}),
     // Same template+params shape as abilities, so the UI renders any
     // superimposition level and can highlight the substituted values.
     passive: {

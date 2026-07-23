@@ -63,7 +63,13 @@ export function DatabaseCharactersTab() {
         .map((id) => id.replace(/b\d+$/, '')),
     )
     return Object.values(all)
-      .filter((c) => !c.unreleased && !deprecated.has(c.id))
+      .filter((c) => {
+        if (deprecated.has(c.id)) return false
+        // Show beta (unreleased) characters only once their datamined kit is
+        // available, so the entry isn't an empty shell.
+        if (c.unreleased && !getCharacterLore(c.id)) return false
+        return true
+      })
       .sort((a, b) => b.rarity - a.rarity || a.name.localeCompare(b.name))
   }, [])
 
@@ -154,6 +160,7 @@ export function DatabaseCharactersTab() {
                       setDetailOpened(true)
                     }}
                   >
+                    {c.unreleased && <span className={styles.betaBadge}>BETA</span>}
                     <img src={Assets.getCharacterAvatarById(c.id)} className={`${styles.cardIcon} ${rarityIconClass(c.rarity)}`} loading='lazy' />
                     <span className={styles.cardName}>
                       <span className={rarityClass(c.rarity)}>{'★'.repeat(c.rarity)}</span>
@@ -191,10 +198,14 @@ function CharacterDetails({ id, onBack }: { id: CharacterId, onBack: () => void 
       <div className={styles.detailHeader}>
         <img src={Assets.getCharacterAvatarById(id)} className={`${styles.detailPortrait} ${rarityIconClass(meta.rarity)}`} />
         <div>
-          <h3 className={styles.detailName}>{meta.name}</h3>
+          <h3 className={styles.detailName}>
+            {meta.name}
+            {meta.unreleased && <span className={styles.betaBadgeInline}>BETA</span>}
+          </h3>
           <div className={styles.detailMeta}>
             <span className={rarityClass(meta.rarity)}>{'★'.repeat(meta.rarity)}</span>
           </div>
+          {meta.unreleased && <div className={styles.betaNote}>Datamined — numbers may change</div>}
           <div className={styles.detailMeta}>
             <img src={Assets.getElement(meta.element)} className={styles.metaIcon} />
             {meta.element}

@@ -34,6 +34,8 @@ export interface CharacterLore {
   name: string,
   path: string,
   element: string,
+  /** Unreleased/beta character — datamined ahead of release, numbers may change. */
+  beta?: boolean,
   abilities: {
     basic_atk: LoreAbility,
     skill: LoreAbility,
@@ -50,6 +52,7 @@ export interface LightConeLore {
   name: string,
   path: string,
   rarity: number,
+  beta?: boolean,
   passive: LoreAbility,
 }
 

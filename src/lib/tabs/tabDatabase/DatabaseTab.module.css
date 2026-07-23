@@ -176,6 +176,44 @@
 .rarity4 { color: var(--rarity-4-end); }
 .rarity3 { color: var(--rarity-3-end); }
 
+/* Beta (datamined / unreleased) markers. */
+.betaBadge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-default);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: var(--glow-active);
+}
+
+.betaBadgeInline {
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background: var(--primary-default);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
+
+.betaNote {
+  color: var(--primary-light);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.4px;
+  margin-top: 4px;
+}
+
 .detailPane {
   width: 440px;
   flex-shrink: 0;

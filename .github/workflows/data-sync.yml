@@ -1,0 +1,64 @@
+name: Data sync
+
+# Keeps game data and the Database lore in sync with upstream sources so new
+# (and datamined/beta) characters, light cones and skills appear without a
+# manual regen:
+#   - game_data.json + relic affixes  <- upstream Fribbels' hsr-optimizer
+#   - database_lore.json              <- StarRailRes datamine (via the generator)
+#
+# Runs daily and on demand. Commits to the default branch only when something
+# actually changed; the VPS deploy cron then rebuilds from that commit.
+
+on:
+  schedule:
+    - cron: '0 6 * * *' # 06:00 UTC daily
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Pull the latest game data from upstream Fribbels. Each file is written
+      # to a temp path first and only swapped in if it downloaded and parses as
+      # JSON, so a transient failure never corrupts the committed data.
+      - name: Sync game data from upstream
+        run: |
+          UP="https://raw.githubusercontent.com/fribbels/hsr-optimizer/main/src/data"
+          for f in game_data.json relic_main_affixes.json relic_sub_affixes.json; do
+            if curl -fsSL "$UP/$f" -o "/tmp/$f" && node -e "JSON.parse(require('fs').readFileSync('/tmp/$f','utf8'))"; then
+              mv "/tmp/$f" "src/data/$f"
+              echo "updated src/data/$f"
+            else
+              echo "skip $f (download or parse failed)"
+            fi
+          done
+
+      # Regenerate the Database lore (skills / eidolons / traces, including
+      # datamined beta kits) from StarRailRes.
+      - name: Regenerate database lore
+        run: node scripts/gen-database-lore.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name  'stellaron-metrics-bot'
+          git config user.email 'bot@users.noreply.github.com'
+          if git diff --quiet -- src/data; then
+            echo 'No data changes.'
+            exit 0
+          fi
+          git add src/data
+          git commit -m 'chore(data): sync game data + lore from upstream [skip ci]'
+          git push
