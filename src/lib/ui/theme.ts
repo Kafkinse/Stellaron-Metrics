@@ -85,19 +85,26 @@ export function createMantineTheme(seed: string): MantineThemeOverride {
       },
       Radio: { defaultProps: { size: 'xs' } },
       SegmentedControl: {
-        defaultProps: { size: 'xs', withItemsBorders: false, radius: 999 },
+        defaultProps: { size: 'xs', withItemsBorders: false, radius: 10 },
         styles: {
           root: { backgroundColor: 'rgba(0, 0, 0, 0.18)' },
-          indicator: { borderRadius: 999 },
+          // Active segment reads as a lit HUD tab: rounded-rect + violet glow.
+          indicator: { borderRadius: 8, boxShadow: 'var(--glow-active)' },
           label: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
           innerLabel: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
         },
       },
       Button: {
-        defaultProps: { size: 'xs', radius: 999 },
+        defaultProps: { size: 'xs', radius: 10 },
         styles: { label: { fontSize: '14px', fontWeight: 'normal' } },
       },
-      Badge: { defaultProps: { radius: 999 } },
+      Badge: { defaultProps: { radius: 8 } },
+      Chip: {
+        styles: {
+          // Rounded-rect chips that glow when active (HUD tab feel).
+          label: { borderRadius: 8, '&[data-checked]': { boxShadow: 'var(--glow-active)' } },
+        },
+      },
       Pagination: { defaultProps: { size: 'xs' } },
       Slider: { defaultProps: { size: 'xs' } },
       Tabs: { defaultProps: { size: 'xs' } },

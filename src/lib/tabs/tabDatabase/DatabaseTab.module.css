@@ -23,18 +23,50 @@
 }
 
 .filters {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--hud-border);
+  border-radius: var(--radius-btn);
+  background: rgba(133, 98, 255, 0.03);
+}
+
+/* Four HUD corner brackets (theherta motif) drawn as gradient arms. */
+.filters::before {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  --c: var(--hud-corner);
+  --s: 12px;
+  --t: 2px;
+  background:
+    linear-gradient(var(--c) 0 0) 0 0 / var(--t) var(--s),
+    linear-gradient(var(--c) 0 0) 0 0 / var(--s) var(--t),
+    linear-gradient(var(--c) 0 0) 100% 0 / var(--t) var(--s),
+    linear-gradient(var(--c) 0 0) 100% 0 / var(--s) var(--t),
+    linear-gradient(var(--c) 0 0) 0 100% / var(--t) var(--s),
+    linear-gradient(var(--c) 0 0) 0 100% / var(--s) var(--t),
+    linear-gradient(var(--c) 0 0) 100% 100% / var(--t) var(--s),
+    linear-gradient(var(--c) 0 0) 100% 100% / var(--s) var(--t);
+  background-repeat: no-repeat;
 }
 
 .filterLabel {
   color: var(--text-tertiary);
-  font-size: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 1.2px;
+}
+
+.filterLabel::before {
+  content: '// ';
+  color: var(--primary-default);
 }
 
 /* Clears all active tag filters at once (chips also toggle off individually). */
@@ -46,7 +78,7 @@
   padding: 0 10px;
   background: var(--layer-inset);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-btn);
   color: var(--text-secondary);
   font: inherit;
   font-size: 12px;
@@ -66,6 +98,8 @@
 }
 
 .card {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,7 +112,7 @@
   color: var(--text-secondary);
   font: inherit;
   text-align: center;
-  transition: border-color 0.1s ease, background 0.1s ease;
+  transition: border-color 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
 }
 
 .card:hover {
@@ -89,6 +123,18 @@
   border-color: var(--primary-default);
   background: var(--primary-light-alpha, var(--layer-2));
   color: var(--text-primary);
+  box-shadow: var(--glow-active);
+}
+
+/* Left accent bar on the selected card (theherta stage-card motif). */
+.cardActive::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--primary-default);
 }
 
 .cardIcon {
@@ -134,7 +180,7 @@
   width: 440px;
   flex-shrink: 0;
   background: var(--layer-1);
-  border: var(--border-subtle);
+  border: 1px solid var(--hud-border);
   border-radius: var(--radius-card);
   padding: 16px;
   position: sticky;
@@ -206,10 +252,18 @@
 
 .sectionTitle {
   color: var(--text-tertiary);
-  font-size: 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 16px 0 8px;
+  letter-spacing: 1.5px;
+  margin: 18px 0 10px;
+}
+
+/* Terminal-style '// LABEL' prefix (theherta HUD motif). */
+.sectionTitle::before {
+  content: '// ';
+  color: var(--primary-default);
+  font-weight: 700;
 }
 
 .entryBlock {
@@ -221,9 +275,10 @@
 
 .entryTag {
   color: var(--primary-light);
-  font-size: 11px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 1px;
 }
 
 .entryName {

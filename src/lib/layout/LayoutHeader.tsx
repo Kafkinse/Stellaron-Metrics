@@ -58,8 +58,13 @@ export function LayoutHeader() {
           >
             <Flex align='center'>
               <img src={Assets.getLogo()} className={classes.logo} />
-              <div className={classes.title}>
-                Stellaron Metrics
+              <div>
+                <div className={classes.title}>
+                  Stellaron Metrics
+                </div>
+                <div className={classes.tagline}>
+                  // HSR COMBAT DATA TERMINAL
+                </div>
               </div>
             </Flex>
           </a>

@@ -3,6 +3,8 @@
   --font-ui: 'Inter Variable', system-ui, -apple-system, sans-serif;
   --font-display: 'Sora Variable', 'Inter Variable', system-ui, sans-serif;
   --font-showcase: 'Maven Pro', sans-serif;
+  /* Monospace for HUD section labels (// LABEL) — system stack, no download. */
+  --font-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
 
   /* Layers — elevation stack */
   --layer-0: var(--mantine-color-dark-7);          /* body background */
@@ -37,8 +39,14 @@
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 6px;
+  --radius-btn: 10px;   /* rounded-rect controls (theherta-style, not pills) */
   --radius-card: 16px;
   --radius-pill: 999px;
+
+  /* HUD accents (violet-tinted terminal framing) */
+  --hud-border: rgba(133, 98, 255, 0.28);
+  --hud-corner: rgba(149, 128, 255, 0.55);
+  --glow-active: 0 0 0 1px var(--primary-default), 0 0 12px rgba(113, 61, 255, 0.38);
 
   /* Fixed accent colors (not seed-derived) — ultraviolet palette */
   --color-link: #b7a4fb;

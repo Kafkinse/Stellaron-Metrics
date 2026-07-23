@@ -23,10 +23,22 @@
 }
 
 .title {
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-weight: 600;
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.1;
+  color: rgba(255, 255, 255, 0.92);
   letter-spacing: -0.01em;
+}
+
+/* theherta-style mono subtitle under the wordmark. */
+.tagline {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  color: var(--primary-light);
+  opacity: 0.75;
+  margin-top: 1px;
 }
 
 /* LayoutSider */
