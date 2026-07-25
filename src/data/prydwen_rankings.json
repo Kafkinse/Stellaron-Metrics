@@ -204,6 +204,7 @@
   "1014": {
     "lightCones": [
       "23045",
+      "23062",
       "24000",
       "23044",
       "21058"
@@ -215,14 +216,14 @@
       "The Wind-Soaring Valorous"
     ],
     "ornaments": [
-      "Inert Salsotto",
-      "Firmament Frontline: Glamoth",
-      "Space Sealing Station",
-      "Rutilant Arena"
+      "Cosmic Life Sciences Institute",
+      "Izumo Gensei and Takama Divine Realm",
+      "Inert Salsotto"
     ]
   },
   "1015": {
     "lightCones": [
+      "23056",
       "23046",
       "23020",
       "24001",
@@ -674,6 +675,27 @@
       "Bone Collection's Serene Demesne",
       "Rutilant Arena",
       "Inert Salsotto"
+    ]
+  },
+  "1213": {
+    "lightCones": [
+      "23015",
+      "24000",
+      "23002"
+    ],
+    "relics": [
+      "Poet of Mourning Collapse",
+      "Wastelander of Banditry Desert",
+      "Musketeer of Wild Wheat",
+      "Prisoner in Deep Confinement",
+      "The Wind-Soaring Valorous",
+      "Scholar Lost in Erudition"
+    ],
+    "ornaments": [
+      "Rutilant Arena",
+      "Space Sealing Station",
+      "Firmament Frontline: Glamoth",
+      "Tengoku@Livestream"
     ]
   },
   "1214": {
@@ -1482,6 +1504,44 @@
       "Punklorde Stage Zero"
     ]
   },
+  "1508": {
+    "lightCones": [
+      "21013",
+      "23037",
+      "23041"
+    ],
+    "relics": [
+      "Scholar Lost in Erudition",
+      "The Ashblazing Grand Duke"
+    ],
+    "ornaments": [
+      "Penacony, Land of the Dreams",
+      "City of Converging Stars",
+      "Lushaka, the Sunken Seas",
+      "Tengoku@Livestream"
+    ]
+  },
+  "1509": {
+    "lightCones": [
+      "23062",
+      "23045",
+      "23044",
+      "21058",
+      "24000",
+      "21012"
+    ],
+    "relics": [
+      "Genius of Brilliant Stars",
+      "The Ashblazing Grand Duke",
+      "Scholar Lost in Erudition",
+      "World-Remaking Deliverer"
+    ],
+    "ornaments": [
+      "Cosmic Life Sciences Institute",
+      "City of Converging Stars",
+      "Izumo Gensei and Takama Divine Realm"
+    ]
+  },
   "1510": {
     "lightCones": [
       "23060"
@@ -1495,6 +1555,192 @@
       "The Wondrous BananAmusement Park",
       "Fallen Star Anchorage",
       "Rutilant Arena"
+    ]
+  },
+  "8001": {
+    "lightCones": [
+      "24000",
+      "21012",
+      "21042"
+    ],
+    "relics": [
+      "Scholar Lost in Erudition",
+      "Champion of Streetwise Boxing",
+      "Musketeer of Wild Wheat",
+      "Prisoner in Deep Confinement",
+      "Pioneer Diver of Dead Waters",
+      "The Wind-Soaring Valorous"
+    ],
+    "ornaments": [
+      "Rutilant Arena",
+      "Firmament Frontline: Glamoth",
+      "Inert Salsotto",
+      "Space Sealing Station"
+    ]
+  },
+  "8002": {
+    "lightCones": [
+      "24000",
+      "21012",
+      "21042"
+    ],
+    "relics": [
+      "Scholar Lost in Erudition",
+      "Champion of Streetwise Boxing",
+      "Musketeer of Wild Wheat",
+      "Prisoner in Deep Confinement",
+      "Pioneer Diver of Dead Waters",
+      "The Wind-Soaring Valorous"
+    ],
+    "ornaments": [
+      "Rutilant Arena",
+      "Firmament Frontline: Glamoth",
+      "Inert Salsotto",
+      "Space Sealing Station"
+    ]
+  },
+  "8003": {
+    "lightCones": [],
+    "relics": [],
+    "ornaments": [
+      "Fleet of the Ageless",
+      "Penacony, Land of the Dreams",
+      "Lushaka, the Sunken Seas"
+    ]
+  },
+  "8004": {
+    "lightCones": [],
+    "relics": [],
+    "ornaments": [
+      "Fleet of the Ageless",
+      "Penacony, Land of the Dreams",
+      "Lushaka, the Sunken Seas"
+    ]
+  },
+  "8005": {
+    "lightCones": [
+      "21056",
+      "20012",
+      "21004",
+      "21018"
+    ],
+    "relics": [
+      "Thief of Shooting Meteor",
+      "Messenger Traversing Hackerspace",
+      "Iron Cavalry Against the Scourge",
+      "Sacerdos' Relived Ordeal",
+      "Eagle of Twilight Line"
+    ],
+    "ornaments": [
+      "Broken Keel",
+      "Fleet of the Ageless",
+      "Penacony, Land of the Dreams",
+      "Sprightly Vonwacq",
+      "Talia: Kingdom of Banditry",
+      "Forge of the Kalpagni Lantern"
+    ]
+  },
+  "8006": {
+    "lightCones": [
+      "21056",
+      "20012",
+      "21004",
+      "21018"
+    ],
+    "relics": [
+      "Thief of Shooting Meteor",
+      "Messenger Traversing Hackerspace",
+      "Iron Cavalry Against the Scourge",
+      "Sacerdos' Relived Ordeal",
+      "Eagle of Twilight Line"
+    ],
+    "ornaments": [
+      "Broken Keel",
+      "Fleet of the Ageless",
+      "Penacony, Land of the Dreams",
+      "Sprightly Vonwacq",
+      "Talia: Kingdom of Banditry",
+      "Forge of the Kalpagni Lantern"
+    ]
+  },
+  "8007": {
+    "lightCones": [
+      "24005",
+      "21050",
+      "20021",
+      "22006",
+      "23042"
+    ],
+    "relics": [
+      "Messenger Traversing Hackerspace",
+      "Sacerdos' Relived Ordeal",
+      "Warrior Goddess of Sun and Thunder",
+      "Diviner of Distant Reach",
+      "Eagle of Twilight Line"
+    ],
+    "ornaments": [
+      "Lushaka, the Sunken Seas",
+      "Sprightly Vonwacq",
+      "Amphoreus, The Eternal Land"
+    ]
+  },
+  "8008": {
+    "lightCones": [
+      "24005",
+      "21050",
+      "20021",
+      "22006",
+      "23042"
+    ],
+    "relics": [
+      "Messenger Traversing Hackerspace",
+      "Sacerdos' Relived Ordeal",
+      "Warrior Goddess of Sun and Thunder",
+      "Diviner of Distant Reach",
+      "Eagle of Twilight Line"
+    ],
+    "ornaments": [
+      "Lushaka, the Sunken Seas",
+      "Sprightly Vonwacq",
+      "Amphoreus, The Eternal Land"
+    ]
+  },
+  "8009": {
+    "lightCones": [
+      "21064",
+      "22007",
+      "24006"
+    ],
+    "relics": [
+      "Eagle of Twilight Line",
+      "Messenger Traversing Hackerspace",
+      "Sacerdos' Relived Ordeal",
+      "Warrior Goddess of Sun and Thunder"
+    ],
+    "ornaments": [
+      "City of Converging Stars",
+      "Sprightly Vonwacq",
+      "Lushaka, the Sunken Seas",
+      "Broken Keel"
+    ]
+  },
+  "8010": {
+    "lightCones": [
+      "21064",
+      "22007",
+      "24006"
+    ],
+    "relics": [
+      "Eagle of Twilight Line",
+      "Messenger Traversing Hackerspace",
+      "Sacerdos' Relived Ordeal",
+      "Warrior Goddess of Sun and Thunder"
+    ],
+    "ornaments": [
+      "City of Converging Stars",
+      "Sprightly Vonwacq",
+      "Lushaka, the Sunken Seas",
+      "Broken Keel"
     ]
   },
   "1004b1": {
