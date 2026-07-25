@@ -56,19 +56,23 @@ function stripToText(html) {
 
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-// Order candidates by where their RANKED entry appears in the region (top =
-// best). Ranked entries are anchored by the suffix Prydwen prints after each
-// name — light cones "(S1)", sets "(4-PC)" / "(2-PC)". Anchoring on the suffix
-// (a) captures the entry regardless of whether a % is shown, and (b) avoids
-// matching a name that only appears inside another entry's write-up.
-function orderByPosition(region, candidates, suffixSrc, withPieces) {
+// Piece count printed near a set name ("(4-PC)" / "2-PC"), if any.
+function pieceNear(text, index) {
+  const m = text.slice(index, index + 60).match(/([24])\s*-?\s*PC/i)
+  return m ? (m[1] === '2' ? '2PC' : '4PC') : ''
+}
+
+// Order candidates by where their name first appears in the region. Prydwen
+// lists entries top-to-bottom in rank order, so text position == ranking —
+// this works whether or not a performance % is shown, and (unlike anchoring on
+// a "(S1)"/"(4-PC)" suffix) doesn't depend on that suffix being adjacent in the
+// stripped DOM text.
+function orderEntries(region, candidates, withPieces) {
   const found = []
   for (const { key, name } of candidates) {
-    const m = new RegExp(escapeRegExp(name) + '\\s*\\((' + suffixSrc + ')\\)', 'i').exec(region)
-    if (!m) continue
-    found.push(withPieces
-      ? { key, index: m.index, pieces: /2/.test(m[1]) ? '2PC' : '4PC' }
-      : { key, index: m.index })
+    const index = region.search(new RegExp(escapeRegExp(name)))
+    if (index === -1) continue
+    found.push({ key, index, pieces: withPieces ? pieceNear(region, index) : undefined })
   }
   const seen = new Set()
   return found
@@ -126,9 +130,9 @@ for (const [id, character] of Object.entries(gameData.characters)) {
     const relicRegion = sliceRegion(text, /best relic/i, [/best stats/i, /best team/i, /synerg/i]) ?? ''
 
     const entry = {
-      lightCones: orderByPosition(lcRegion, conesByPath.get(character.path) ?? [], 'S\\d', false).map((r) => r.key),
-      relics: orderByPosition(relicRegion, cavernSets, '\\d\\s*-?\\s*PC', true).map((r) => ({ set: r.key, pieces: r.pieces })),
-      ornaments: orderByPosition(relicRegion, planarSets, '\\d\\s*-?\\s*PC', true).map((r) => ({ set: r.key, pieces: r.pieces })),
+      lightCones: orderEntries(lcRegion, conesByPath.get(character.path) ?? [], false).map((r) => r.key),
+      relics: orderEntries(relicRegion, cavernSets, true).map((r) => ({ set: r.key, pieces: r.pieces })),
+      ornaments: orderEntries(relicRegion, planarSets, true).map((r) => ({ set: r.key, pieces: r.pieces })),
     }
     if (entry.lightCones.length || entry.relics.length || entry.ornaments.length) {
       out[id] = entry
