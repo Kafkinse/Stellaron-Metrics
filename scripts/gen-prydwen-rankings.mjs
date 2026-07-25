@@ -56,38 +56,25 @@ function stripToText(html) {
 
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-const PERCENT = /(\d{1,3}(?:\.\d+)?)\s*%/g
-
-// Nearest percentage that precedes a name (Prydwen prints "100.00%" then the
-// item), within the same block.
-function percentBeforeIndex(text, nameIndex) {
-  let best = null
-  PERCENT.lastIndex = 0
-  let m
-  while ((m = PERCENT.exec(text)) !== null) {
-    if (m.index > nameIndex) break
-    best = { value: Number(m[1]), index: m.index }
-  }
-  if (best && nameIndex - best.index < 400) return best.value
-  return null
-}
-
-// Ordered ids/names for a set of candidates found within a text region.
-function orderByPercent(region, candidates) {
+// Order candidates by where their RANKED entry appears in the region (top =
+// best). Ranked entries are anchored by the suffix Prydwen prints after each
+// name — light cones "(S1)", sets "(4-PC)" / "(2-PC)". Anchoring on the suffix
+// (a) captures the entry regardless of whether a % is shown, and (b) avoids
+// matching a name that only appears inside another entry's write-up.
+function orderByPosition(region, candidates, suffixSrc, withPieces) {
   const found = []
   for (const { key, name } of candidates) {
-    const idx = region.search(new RegExp(escapeRegExp(name)))
-    if (idx === -1) continue
-    const percent = percentBeforeIndex(region, idx)
-    if (percent == null) continue
-    found.push({ key, percent })
+    const m = new RegExp(escapeRegExp(name) + '\\s*\\((' + suffixSrc + ')\\)', 'i').exec(region)
+    if (!m) continue
+    found.push(withPieces
+      ? { key, index: m.index, pieces: /2/.test(m[1]) ? '2PC' : '4PC' }
+      : { key, index: m.index })
   }
   const seen = new Set()
   return found
-    .sort((a, b) => b.percent - a.percent)
+    .sort((a, b) => a.index - b.index)
     .filter((r) => (seen.has(r.key) ? false : seen.add(r.key)))
     .slice(0, MAX)
-    .map((r) => r.key)
 }
 
 function sliceRegion(text, startRe, endRes) {
@@ -139,9 +126,9 @@ for (const [id, character] of Object.entries(gameData.characters)) {
     const relicRegion = sliceRegion(text, /best relic/i, [/best stats/i, /best team/i, /synerg/i]) ?? ''
 
     const entry = {
-      lightCones: orderByPercent(lcRegion, conesByPath.get(character.path) ?? []),
-      relics: orderByPercent(relicRegion, cavernSets),
-      ornaments: orderByPercent(relicRegion, planarSets),
+      lightCones: orderByPosition(lcRegion, conesByPath.get(character.path) ?? [], 'S\\d', false).map((r) => r.key),
+      relics: orderByPosition(relicRegion, cavernSets, '\\d\\s*-?\\s*PC', true).map((r) => ({ set: r.key, pieces: r.pieces })),
+      ornaments: orderByPosition(relicRegion, planarSets, '\\d\\s*-?\\s*PC', true).map((r) => ({ set: r.key, pieces: r.pieces })),
     }
     if (entry.lightCones.length || entry.relics.length || entry.ornaments.length) {
       out[id] = entry

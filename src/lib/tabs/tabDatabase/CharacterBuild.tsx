@@ -12,8 +12,12 @@ import { type LightConeId } from 'types/lightCone'
 // Prydwen rankings (used with permission, credited in the UI). We store only
 // the ORDER — which light cone / set is ranked above which — never their
 // numbers or write-ups.
-type Ranking = { lightCones: string[], relics: string[], ornaments: string[] }
+type RankedSet = { set: string, pieces: string }
+// Older data stored sets as plain names; newer data as { set, pieces }.
+type RawSet = string | RankedSet
+type Ranking = { lightCones: string[], relics: RawSet[], ornaments: RawSet[] }
 const rankings = prydwenRankings as Record<string, Ranking>
+const asSet = (r: RawSet): RankedSet => (typeof r === 'string' ? { set: r, pieces: '' } : r)
 
 const statIcon = (stat: string) => Assets.getStatIcon(stat, stat.includes('%'))
 
@@ -56,7 +60,7 @@ function SetRow({ set, part, pieces }: { set: string, part: string, pieces: stri
     <div className={styles.setRow}>
       <img src={Assets.getSetImage(set, part, true)} className={styles.setIcon} title={set} />
       <span className={styles.setName}>{set}</span>
-      <span className={styles.setPieces}>{pieces}</span>
+      {pieces && <span className={styles.setPieces}>{pieces}</span>}
     </div>
   )
 }
@@ -129,7 +133,7 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
         <>
           <div className={styles.sectionTitle}>Relic sets</div>
           {ranked?.relics?.length
-            ? ranked.relics.map((set) => <SetRow key={set} set={set} part={Parts.Head} pieces='4PC' />)
+            ? ranked.relics.map(asSet).map((r) => <SetRow key={r.set} set={r.set} part={Parts.Head} pieces={r.pieces} />)
             : scoringRelics.map((combo, i) => (
               <div key={i} className={styles.setRow}>
                 <span className={styles.setIcons}>
@@ -147,9 +151,9 @@ export function CharacterBuild({ id }: { id: CharacterId }) {
       {(ranked?.ornaments?.length || scoringOrnaments.length > 0) && (
         <>
           <div className={styles.sectionTitle}>Planar ornaments</div>
-          {(ranked?.ornaments?.length ? ranked.ornaments : scoringOrnaments).map((set) => (
-            <SetRow key={set} set={set} part={Parts.PlanarSphere} pieces='2PC' />
-          ))}
+          {ranked?.ornaments?.length
+            ? ranked.ornaments.map(asSet).map((r) => <SetRow key={r.set} set={r.set} part={Parts.PlanarSphere} pieces={r.pieces} />)
+            : scoringOrnaments.map((set) => <SetRow key={set} set={set} part={Parts.PlanarSphere} pieces='2PC' />)}
         </>
       )}
 
