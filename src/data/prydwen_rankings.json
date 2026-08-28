@@ -3736,6 +3736,10 @@
       {
         "set": "Scholar Lost in Erudition",
         "pieces": "4PC"
+      },
+      {
+        "set": "Divine-Querying Master Smith",
+        "pieces": "4PC"
       }
     ],
     "ornaments": [
@@ -3836,6 +3840,43 @@
       },
       {
         "set": "Rutilant Arena",
+        "pieces": "2PC"
+      }
+    ]
+  },
+  "1512": {
+    "lightCones": [
+      "23063",
+      "23042",
+      "24005",
+      "21054",
+      "20021"
+    ],
+    "relics": [
+      {
+        "set": "World-Remaking Deliverer",
+        "pieces": "4PC"
+      },
+      {
+        "set": "Messenger Traversing Hackerspace",
+        "pieces": "4PC"
+      }
+    ],
+    "ornaments": [
+      {
+        "set": "Amphoreus, The Eternal Land",
+        "pieces": "2PC"
+      },
+      {
+        "set": "Lushaka, the Sunken Seas",
+        "pieces": "2PC"
+      },
+      {
+        "set": "Sprightly Vonwacq",
+        "pieces": "2PC"
+      },
+      {
+        "set": "Fleet of the Ageless",
         "pieces": "2PC"
       }
     ]
