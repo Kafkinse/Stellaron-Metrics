@@ -3881,6 +3881,23 @@
       }
     ]
   },
+  "1513": {
+    "lightCones": [
+      "23064",
+      "21065",
+      "23057",
+      "23058",
+      "21066",
+      "21064"
+    ],
+    "relics": [
+      {
+        "set": "Ever-Glorious Magical Girl",
+        "pieces": "4PC"
+      }
+    ],
+    "ornaments": []
+  },
   "8001": {
     "lightCones": [
       "24000",
