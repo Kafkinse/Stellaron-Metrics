@@ -1132,20 +1132,8 @@
         "pieces": "4PC"
       },
       {
-        "set": "Scholar Lost in Erudition",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Musketeer of Wild Wheat",
-        "pieces": ""
-      },
-      {
-        "set": "Prisoner in Deep Confinement",
-        "pieces": ""
-      },
-      {
-        "set": "The Wind-Soaring Valorous",
-        "pieces": ""
+        "set": "The Edacious Heretic",
+        "pieces": "4PC"
       }
     ],
     "ornaments": [
@@ -1730,6 +1718,10 @@
     ],
     "relics": [
       {
+        "set": "The Edacious Heretic",
+        "pieces": "4PC"
+      },
+      {
         "set": "Poet of Mourning Collapse",
         "pieces": "4PC"
       },
@@ -1747,10 +1739,6 @@
       },
       {
         "set": "Prisoner in Deep Confinement",
-        "pieces": ""
-      },
-      {
-        "set": "The Wind-Soaring Valorous",
         "pieces": ""
       }
     ],
@@ -3656,6 +3644,50 @@
       }
     ]
   },
+  "1503": {
+    "lightCones": [
+      "23055",
+      "23054",
+      "23058",
+      "21064"
+    ],
+    "relics": [
+      {
+        "set": "Dreamlit Actor",
+        "pieces": "4PC"
+      },
+      {
+        "set": "Diviner of Distant Reach",
+        "pieces": "4PC"
+      },
+      {
+        "set": "Warrior Goddess of Sun and Thunder",
+        "pieces": "4PC"
+      },
+      {
+        "set": "Sacerdos' Relived Ordeal",
+        "pieces": ""
+      },
+      {
+        "set": "Eagle of Twilight Line",
+        "pieces": "4PC"
+      }
+    ],
+    "ornaments": [
+      {
+        "set": "Broken Keel",
+        "pieces": "2PC"
+      },
+      {
+        "set": "Sprightly Vonwacq",
+        "pieces": "2PC"
+      },
+      {
+        "set": "City of Converging Stars",
+        "pieces": "2PC"
+      }
+    ]
+  },
   "1504": {
     "lightCones": [
       "23056",
@@ -3672,6 +3704,10 @@
       },
       {
         "set": "Pioneer Diver of Dead Waters",
+        "pieces": "4PC"
+      },
+      {
+        "set": "Eagle of Twilight Line",
         "pieces": "4PC"
       }
     ],
@@ -4321,6 +4357,10 @@
     ],
     "relics": [
       {
+        "set": "Dreamlit Actor",
+        "pieces": "4PC"
+      },
+      {
         "set": "Diviner of Distant Reach",
         "pieces": "4PC"
       },
@@ -4368,6 +4408,10 @@
       "22007"
     ],
     "relics": [
+      {
+        "set": "Dreamlit Actor",
+        "pieces": "4PC"
+      },
       {
         "set": "Diviner of Distant Reach",
         "pieces": "4PC"
