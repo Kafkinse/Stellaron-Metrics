@@ -28443,6 +28443,27 @@
           ]
         },
         {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Hat Trick",
+          "template": "When the Path of Elation ascends, Elation Skill's DMG multiplier increases by #5[i]% of its original multiplier, and ally targets ignore #1[i]% of the enemy target's DEF when dealing DMG. For every #2[i] \"Party Trick\" held, triggering \"Straight Fire\" additionally provides #3[i] Bliss, up to #4[i].",
+          "params": [
+            [
+              0.15,
+              10,
+              1,
+              8,
+              0.5
+            ],
+            [
+              0.2,
+              10,
+              1,
+              12,
+              1.2
+            ]
+          ]
+        },
+        {
           "type": "Basic ATK",
           "name": "Bloom! Winner Takes All",
           "template": "Finalizes the livestream. Deals Fire DMG equal to #1[i]% of Sparxie's ATK to one designated enemy, and Fire DMG equal to #2[f1]% of Sparxie's ATK to adjacent targets.",
@@ -29083,6 +29104,25 @@
               0.25
             ]
           ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Mind Reading",
+          "template": "When the Path of Elation ascends, the DMG multiplier of the \"Great Boon\" effect increases by an amount equal to #1[i]% of its original value. After using Ultimate, Yao Guang regenerates a fixed amount of #2[i] Energy and gains #4[i] Bliss.",
+          "params": [
+            [
+              0.2,
+              12,
+              0,
+              10
+            ],
+            [
+              0.4,
+              30,
+              0,
+              10
+            ]
+          ]
         }
       ],
       "majorTraces": [
@@ -29630,6 +29670,23 @@
               0.1875,
               0.25,
               0.5
+            ]
+          ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Leaping Off the Page",
+          "template": "When the Path of Elation ascends, the upper limit for Pearl's \"Party Trick\" increases to #1[i]. When the extra turn granted by the Ultimate ends, #2[i]% of the \"Certified Banger\" and #3[i]% of the Punchline gained at the start of the extra turn are retained.",
+          "params": [
+            [
+              75,
+              0.1,
+              0.1
+            ],
+            [
+              75,
+              0.2,
+              0.2
             ]
           ]
         },
@@ -30746,6 +30803,25 @@
               1.375
             ]
           ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Pages to Petals",
+          "template": "When the Path of Elation ascends, overflow Energy can accumulate up to #3[i]. After using Ultimate, clears this accumulation to regenerate an equal amount of Energy. This instance of regeneration will not trigger the Talent's Certified Banger gain effect. The DMG dealt ignores #2[i]% of the enemy target's DEF. For every #4[i] \"Party Trick\" accumulated, the DMG multiplier of the next Ultimate and the multiplier of the Elation DMG dealt by that Ultimate via the Talent increases by #1[i]% of their respective original values. This effect cannot stack.",
+          "params": [
+            [
+              0.75,
+              0.1,
+              60,
+              480
+            ],
+            [
+              1.5,
+              0.24,
+              240,
+              480
+            ]
+          ]
         }
       ],
       "majorTraces": [
@@ -31299,6 +31375,23 @@
             [
               1.125,
               6
+            ]
+          ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Holographic Mirage",
+          "template": "When the Path of Elation ascends, \"Hidden MMR\" can overflow up to #1[i] after reaching its upper limit. Increases CRIT DMG by #3[i]%. For every 1 point of \"Party Trick\" gained, simultaneously grants \"Hidden MMR\" equal to #2[i]% of that amount.",
+          "params": [
+            [
+              360,
+              0.2,
+              0.4
+            ],
+            [
+              999,
+              0.4,
+              0.4
             ]
           ]
         },
@@ -34369,6 +34462,674 @@
         }
       ]
     },
+    "1511": {
+      "name": "Aeon ★ Aha",
+      "path": "Elation",
+      "element": "Quantum",
+      "abilities": {
+        "basic_atk": {
+          "name": "Starfrost, Showtime!",
+          "template": "Deals #1[i]% Quantum Elation DMG to one designated enemy target.",
+          "params": [
+            [
+              0.25,
+              1
+            ],
+            [
+              0.3,
+              1
+            ],
+            [
+              0.35,
+              1
+            ],
+            [
+              0.4,
+              1
+            ],
+            [
+              0.45,
+              1
+            ],
+            [
+              0.5,
+              1
+            ],
+            [
+              0.55,
+              1
+            ],
+            [
+              0.6,
+              1
+            ],
+            [
+              0.65,
+              1
+            ],
+            [
+              0.7,
+              1
+            ]
+          ]
+        },
+        "skill": {
+          "name": "This Emanator Was Certified by Aha™",
+          "template": "Enables one designated ally character (excluding this unit) to gain the \"Emanator of Elation\" state, then immediately launches Follow-up ATK, dealing #2[i]% Quantum Elation DMG to all enemies. The \"Emanator of Elation\" state lasts for the entire battle until it switches to the next target. The target with the \"Emanator of Elation\" state has their Elation stat increased by #1[i]% and, at the start of their turn, enables Aeon ★ Aha to gain #6[i] point(s) of \"Wishpower.\"",
+          "params": [
+            [
+              0.1,
+              0.25,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.11,
+              0.275,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.12,
+              0.3,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.13,
+              0.325,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.14,
+              0.35,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.15,
+              0.375,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.1625,
+              0.4062,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.175,
+              0.4375,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.1875,
+              0.4688,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.2,
+              0.5,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.21,
+              0.525,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.22,
+              0.55,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.23,
+              0.575,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.24,
+              0.6,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              0.25,
+              0.625,
+              0,
+              0,
+              1,
+              1
+            ]
+          ]
+        },
+        "ultimate": {
+          "name": "Aha! Let There Be Laughter",
+          "template": "Aha's action advances by #5[i]%. Aeon ★ Aha gains the \"Faces of Elation\" state, lasting for #6[i] turn(s). This duration decreases by 1 at the start of Aeon ★ Aha's every turn. Deals #2[i]% Quantum Elation DMG to all enemies. Then, deals #3[i] instance(s) of DMG, with each instance dealing #4[i]% Quantum Elation DMG to one random enemy.",
+          "params": [
+            [
+              8,
+              1.2,
+              5,
+              0.36,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.28,
+              5,
+              0.384,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.36,
+              5,
+              0.408,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.44,
+              5,
+              0.432,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.52,
+              5,
+              0.456,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.6,
+              5,
+              0.48,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.7,
+              5,
+              0.51,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.8,
+              5,
+              0.54,
+              0.2,
+              3
+            ],
+            [
+              8,
+              1.9,
+              5,
+              0.57,
+              0.2,
+              3
+            ],
+            [
+              8,
+              2,
+              5,
+              0.6,
+              0.2,
+              3
+            ],
+            [
+              8,
+              2.08,
+              5,
+              0.624,
+              0.2,
+              3
+            ],
+            [
+              8,
+              2.16,
+              5,
+              0.648,
+              0.2,
+              3
+            ],
+            [
+              8,
+              2.24,
+              5,
+              0.672,
+              0.2,
+              3
+            ],
+            [
+              8,
+              2.32,
+              5,
+              0.696,
+              0.2,
+              3
+            ],
+            [
+              8,
+              2.4,
+              5,
+              0.72,
+              0.2,
+              3
+            ]
+          ]
+        },
+        "talent": {
+          "name": "Work Wonders with THEM",
+          "template": "Can activate Ultimate after \"Wishpower\" reaches #8[i]. After reaching its upper limit, Wishpower can still overflow up to #11[i]. After using Basic ATK, Skill, or Elation Skill, Aeon ★ Aha gains #7[i] \"Wishpower.\" After allies' Punchline reaches #2[i] for the first time, Aeon ★ Aha will immediately gain #3[i] \"Wishpower\" and then increase all allies' CRIT DMG by #9[i]%, lasting for #10[i] turn(s). This can trigger again after Aha's turn ends.",
+          "params": [
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.2,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.22,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.24,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.26,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.28,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.3,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.325,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.35,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.375,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.4,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.42,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.44,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.46,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.48,
+              3,
+              10
+            ],
+            [
+              1,
+              40,
+              1,
+              0,
+              20,
+              8,
+              1,
+              8,
+              0.5,
+              3,
+              10
+            ]
+          ]
+        },
+        "technique": {
+          "name": "ABRACADABRA!",
+          "template": "After using Technique, creates a Special Dimension around this unit, lasting for #2[i] second(s). Enemies within this Special Dimension get inflicted with \"Optical Illusion.\" Once inflicted with \"Optical Illusion,\" they cannot detect ally targets. After entering combat, Aha immediately gains 1 extra turn where a fixed amount of #1[i] Punchline is taken into account. This turn does not consume Punchline. Only 1 dimension effect created by allies can exist at the same time.",
+          "params": [
+            [
+              20,
+              20
+            ]
+          ]
+        }
+      },
+      "extraAbilities": [
+        {
+          "type": "Elation Skill",
+          "name": "Yes Aha At Full Moon",
+          "template": "Always gets used at the end of Aha Instant regardless of Participant ID. Deals #1[i]% Quantum Elation DMG to all enemies, and deals True DMG based on #2[i]% of total non-True DMG dealt by ally targets during this Aha Instant, distributed evenly among all enemies.",
+          "params": [
+            [
+              0.3,
+              0.2
+            ],
+            [
+              0.33,
+              0.2
+            ],
+            [
+              0.36,
+              0.2
+            ],
+            [
+              0.39,
+              0.2
+            ],
+            [
+              0.42,
+              0.2
+            ],
+            [
+              0.45,
+              0.2
+            ],
+            [
+              0.4875,
+              0.2
+            ],
+            [
+              0.525,
+              0.2
+            ],
+            [
+              0.5625,
+              0.2
+            ],
+            [
+              0.6,
+              0.2
+            ],
+            [
+              0.63,
+              0.2
+            ],
+            [
+              0.66,
+              0.2
+            ],
+            [
+              0.69,
+              0.2
+            ],
+            [
+              0.72,
+              0.2
+            ],
+            [
+              0.75,
+              0.2
+            ]
+          ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Ex Nihilo",
+          "template": "While holding the \"Faces of Elation\" state, Aeon ★ Aha enables allies' Path of Elation to ascend, and enhances Punchline and \"Certified Banger\" into Bliss and \"Party Trick,\" respectively. Bliss recovers #1[i]% of its consumed amount when Aha Instant ends. During \"Faces of Elation,\" Aeon ★ Aha's CRIT Rate increases by #3[i]%, and the DMG dealt ignores #2[i]% of the enemy target's DEF.",
+          "params": [
+            [
+              0.1,
+              0.3,
+              0.12
+            ],
+            [
+              0.1,
+              0.6,
+              0.2
+            ]
+          ]
+        },
+        {
+          "type": "Talent",
+          "name": "The True Story of Aha",
+          "template": "When Aeon ★ Aha or a teammate deals DMG, additionally applies the \"Elation Debt\" effect onto the enemy target, equal to #1[i]% of their HP loss. Elation Debt persists through the enemy target's phase transition, capped at #3[i]% of the target's Max HP.",
+          "params": [
+            [
+              0.25,
+              1,
+              0.1
+            ]
+          ]
+        }
+      ],
+      "majorTraces": [
+        {
+          "unlock": "A0",
+          "name": "The True Story of Aha",
+          "description": "When Aeon ★ Aha or a teammate deals DMG, additionally applies the \"Elation Debt\" effect onto the enemy target, equal to 25% of their HP loss. Elation Debt persists through the enemy target's phase transition, capped at 10% of the target's Max HP."
+        },
+        {
+          "unlock": "A2",
+          "name": "A Prank on Aeons",
+          "description": "Skill's Follow-Up ATK additionally deals 20% Elation DMG of the same Type as the target who holds the \"Emanator of Elation\" state, and recovers 1 Skill Point(s). This additionally dealt Elation DMG is not considered as an instance of attack."
+        },
+        {
+          "unlock": "A4",
+          "name": "A Carnival in Whimsy",
+          "description": "When receiving healing or a Shield provided by a teammate, gains 1 \"Wishpower.\" This can be triggered up to 1 time(s). The trigger count resets after the Ultimate is used."
+        },
+        {
+          "unlock": "A6",
+          "name": "A Box of Everything",
+          "description": "When Aeon ★ Aha's SPD reaches 125/150 or higher, the Elation stat increases by 120%/150%, respectively. When combat starts, own action advances by 30%."
+        }
+      ],
+      "eidolons": [
+        {
+          "level": 1,
+          "name": "Who Giggled at the Primordial Hush?",
+          "description": "When entering combat, immediately gains 5 \"Wishpower.\" When Aeon ★ Aha is present, Elation DMG dealt by all ally targets merrymakes by 15%."
+        },
+        {
+          "level": 2,
+          "name": "Between THEIR Eyes and Yours",
+          "description": "Enhances the \"Elation\" Path Ascension effects: \n#{series_ref_skill_desc:UIText_SeriesSkillDescFormat,151129,2}"
+        },
+        {
+          "level": 3,
+          "name": "A Stacked Deck of Sorrow and Joy",
+          "description": "Ultimate Lv. +2, up to a maximum of Lv. 15.\nBasic ATK Lv. +1, up to a maximum of Lv. 10.\nElation Skill Lv. +1, up to a maximum of Lv. 15."
+        },
+        {
+          "level": 4,
+          "name": "A Joke's Fate Boxed in Black",
+          "description": "The multiplier of the True DMG dealt by Elation Skill increases by 25% of its original value. When Aeon ★ Aha deals Elation DMG, an additional 100% of the total \"Certified Banger\" held by teammates will be taken into account."
+        },
+        {
+          "level": 5,
+          "name": "Moi Onstage and Me Offstage",
+          "description": "Skill Lv. +2, up to a maximum of Lv. 15.\nTalent Lv. +2, up to a maximum of Lv. 15.\nElation Skill Lv. +1, up to a maximum of Lv. 15."
+        },
+        {
+          "level": 6,
+          "name": "For THEY Said: You Are Elation",
+          "description": "Enemy targets always carry an \"Elation Debt\" effect that claims at least 20% of their Max HP. After Aeon ★ Aha uses Ultimate for the first time, Aha's action advances by 100%, and Aha gains 100 Punchline."
+        }
+      ]
+    },
     "1512": {
       "name": "Robin • Summeretto",
       "path": "Remembrance",
@@ -35051,7 +35812,7 @@
         {
           "level": 6,
           "name": "A Song Yet Unnamed",
-          "description": "Increases the Memosprite Skill's DMG multiplier by 100% of its original value. While in the \"Fever\" state, Robin • Summeretto can store her Ultimate up to 2 times. After entering the \"Fever\" state for the first time in this battle or when the the \"Fever\" countdown's turn starts, regenerates a fixed 140 Energy."
+          "description": "Increases the Memosprite Skill's DMG multiplier by 100% of its original value. While in the \"Fever\" state, Robin • Summeretto can store her Ultimate up to 2 times. After entering the \"Fever\" state for the first time in this battle or when the \"Fever\" countdown's turn starts, regenerates a fixed 140 Energy."
         }
       ]
     },
@@ -35618,6 +36379,25 @@
               0.2625,
               10,
               0.225
+            ]
+          ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Three-Card Monte",
+          "template": "When the Path of Elation ascends, if Aeon ★ Aha is the only Elation teammate, then in the Trace \"Revel in Raging Tides,\" the effect that normally requires Aventurine • Waveflair to be the only Elation character will also become active. And this effect is enhanced: The SPD of all allies increases by #2[i]%. After a teammate attacks, Aventurine • Waveflair additionally gains #3[i] \"Fervor\" and #4[i] Bliss.",
+          "params": [
+            [
+              0,
+              0.15,
+              1,
+              1
+            ],
+            [
+              0,
+              0.25,
+              2,
+              2
             ]
           ]
         }
@@ -39239,6 +40019,23 @@
               0.75
             ]
           ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Plot Armor",
+          "template": "When the Path of Elation ascends, the Ultimate's CRIT DMG boost effect additionally increases by #1[i]% and applies to all allies. Before the Ultimate triggers Aeon ★ Aha's Elation Skill, additionally triggers one instance of the Trailblazer's Elation Skill. And the DMG multiplier of this Elation Skill increases by #2[i]% of its original value, and is calculated based on the highest value of \"Party Trick\" held by ally characters. For the Aeon ★ Aha's Elation Skill triggered afterward, its True DMG is instead calculated as #3[i]% of the DMG dealt by the aforementioned Trailblazer's Elation Skill, and is distributed evenly among all enemies.",
+          "params": [
+            [
+              0.2,
+              2,
+              0.2
+            ],
+            [
+              0.3,
+              3,
+              0.2
+            ]
+          ]
         }
       ],
       "majorTraces": [
@@ -39699,6 +40496,23 @@
               8,
               0.25,
               0.75
+            ]
+          ]
+        },
+        {
+          "type": "Innate Trace",
+          "name": "Faces of Elation ★ Plot Armor",
+          "template": "When the Path of Elation ascends, the Ultimate's CRIT DMG boost effect additionally increases by #1[i]% and applies to all allies. Before the Ultimate triggers Aeon ★ Aha's Elation Skill, additionally triggers one instance of the Trailblazer's Elation Skill. And the DMG multiplier of this Elation Skill increases by #2[i]% of its original value, and is calculated based on the highest value of \"Party Trick\" held by ally characters. For the Aeon ★ Aha's Elation Skill triggered afterward, its True DMG is instead calculated as #3[i]% of the DMG dealt by the aforementioned Trailblazer's Elation Skill, and is distributed evenly among all enemies.",
+          "params": [
+            [
+              0.2,
+              2,
+              0.2
+            ],
+            [
+              0.3,
+              3,
+              0.2
             ]
           ]
         }
@@ -47441,6 +48255,37 @@
         ]
       }
     },
+    "22009": {
+      "name": "See You at the World's End!",
+      "path": "Elation",
+      "rarity": 4,
+      "passive": {
+        "name": "Conspirator",
+        "template": "For every Elation character on the team, increase the wearer's CRIT DMG by #1[i]%. When Aeon ★ Aha is on the field, the wearer's CRIT DMG additionally increases by #2[i]%.",
+        "params": [
+          [
+            0.06,
+            0.12
+          ],
+          [
+            0.07,
+            0.14
+          ],
+          [
+            0.08,
+            0.16
+          ],
+          [
+            0.09,
+            0.18
+          ],
+          [
+            0.1,
+            0.2
+          ]
+        ]
+      }
+    },
     "23000": {
       "name": "Night on the Milky Way",
       "path": "Erudition",
@@ -50322,6 +51167,47 @@
             0.4,
             1,
             3
+          ]
+        ]
+      }
+    },
+    "23065": {
+      "name": "Upon the First Echo of \"Aha\"",
+      "path": "Elation",
+      "rarity": 5,
+      "passive": {
+        "name": "Improv Tour",
+        "template": "Increases the wearer's base SPD by #1[i]. When using Skill on one other ally, gains #2[i] Punchline. This effect can trigger at most once after a gap of every #3[i] turn(s). Then, enables all allies to ignore #4[i]% of the enemy target's DEF when they deal DMG during this battle. This effect cannot be stacked.",
+        "params": [
+          [
+            12,
+            10,
+            1,
+            0.16
+          ],
+          [
+            14,
+            12,
+            1,
+            0.18
+          ],
+          [
+            16,
+            14,
+            1,
+            0.2
+          ],
+          [
+            18,
+            16,
+            1,
+            0.22
+          ],
+          [
+            20,
+            18,
+            1,
+            0.24
           ]
         ]
       }

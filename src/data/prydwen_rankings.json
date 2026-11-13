@@ -1272,11 +1272,12 @@
   },
   "1204": {
     "lightCones": [
+      "23060",
+      "23041",
       "23010",
       "21060",
-      "21034",
-      "21020",
-      "21027"
+      "21040",
+      "21034"
     ],
     "relics": [
       {
@@ -1284,24 +1285,8 @@
         "pieces": "4PC"
       },
       {
-        "set": "Band of Sizzling Thunder",
+        "set": "Poet of Mourning Collapse",
         "pieces": "4PC"
-      },
-      {
-        "set": "Pioneer Diver of Dead Waters",
-        "pieces": ""
-      },
-      {
-        "set": "Scholar Lost in Erudition",
-        "pieces": ""
-      },
-      {
-        "set": "Musketeer of Wild Wheat",
-        "pieces": ""
-      },
-      {
-        "set": "Prisoner in Deep Confinement",
-        "pieces": ""
       }
     ],
     "ornaments": [
@@ -1711,8 +1696,8 @@
   },
   "1213": {
     "lightCones": [
-      "23044",
       "23015",
+      "23062",
       "24000",
       "23002"
     ],
@@ -1724,39 +1709,15 @@
       {
         "set": "Poet of Mourning Collapse",
         "pieces": "4PC"
-      },
-      {
-        "set": "Wastelander of Banditry Desert",
-        "pieces": "4PC"
-      },
-      {
-        "set": "Musketeer of Wild Wheat",
-        "pieces": "4PC"
-      },
-      {
-        "set": "Scholar Lost in Erudition",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Prisoner in Deep Confinement",
-        "pieces": ""
       }
     ],
     "ornaments": [
-      {
-        "set": "Rutilant Arena",
-        "pieces": "2PC"
-      },
       {
         "set": "Tengoku@Livestream",
         "pieces": "2PC"
       },
       {
-        "set": "Firmament Frontline: Glamoth",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Space Sealing Station",
+        "set": "Rutilant Arena",
         "pieces": "2PC"
       }
     ]
@@ -2106,27 +2067,11 @@
     ],
     "ornaments": [
       {
+        "set": "Subspace ASC Center",
+        "pieces": "2PC"
+      },
+      {
         "set": "Forge of the Kalpagni Lantern",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Talia: Kingdom of Banditry",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Sprightly Vonwacq",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Fleet of the Ageless",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Broken Keel",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Penacony, Land of the Dreams",
         "pieces": "2PC"
       }
     ]
@@ -2370,15 +2315,11 @@
         "pieces": "2PC"
       },
       {
+        "set": "Subspace ASC Center",
+        "pieces": "2PC"
+      },
+      {
         "set": "Broken Keel",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Fleet of the Ageless",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Penacony, Land of the Dreams",
         "pieces": "2PC"
       },
       {
@@ -2565,34 +2506,18 @@
   "1308": {
     "lightCones": [
       "23024",
-      "23007",
-      "21001",
-      "21044"
+      "21061",
+      "21044",
+      "21001"
     ],
     "relics": [
       {
+        "set": "Eagle of Twilight Line",
+        "pieces": "4PC"
+      },
+      {
         "set": "Pioneer Diver of Dead Waters",
         "pieces": "4PC"
-      },
-      {
-        "set": "Scholar Lost in Erudition",
-        "pieces": "4PC"
-      },
-      {
-        "set": "Band of Sizzling Thunder",
-        "pieces": "4PC"
-      },
-      {
-        "set": "Musketeer of Wild Wheat",
-        "pieces": ""
-      },
-      {
-        "set": "Prisoner in Deep Confinement",
-        "pieces": ""
-      },
-      {
-        "set": "The Wind-Soaring Valorous",
-        "pieces": ""
       }
     ],
     "ornaments": [
@@ -2602,14 +2527,6 @@
       },
       {
         "set": "Inert Salsotto",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Space Sealing Station",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Firmament Frontline: Glamoth",
         "pieces": "2PC"
       }
     ]
@@ -2961,6 +2878,10 @@
       }
     ],
     "ornaments": [
+      {
+        "set": "Subspace ASC Center",
+        "pieces": "2PC"
+      },
       {
         "set": "Forge of the Kalpagni Lantern",
         "pieces": "2PC"
@@ -3635,11 +3556,11 @@
         "pieces": "2PC"
       },
       {
-        "set": "Broken Keel",
+        "set": "God's Moment of Joy",
         "pieces": "2PC"
       },
       {
-        "set": "Giant Tree of Rapt Brooding",
+        "set": "Broken Keel",
         "pieces": "2PC"
       }
     ]
@@ -3680,6 +3601,10 @@
       },
       {
         "set": "Sprightly Vonwacq",
+        "pieces": "2PC"
+      },
+      {
+        "set": "God's Moment of Joy",
         "pieces": "2PC"
       },
       {
@@ -4162,23 +4087,11 @@
     ],
     "ornaments": [
       {
-        "set": "Talia: Kingdom of Banditry",
+        "set": "Subspace ASC Center",
         "pieces": "2PC"
       },
       {
-        "set": "Broken Keel",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Fleet of the Ageless",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Penacony, Land of the Dreams",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Lushaka, the Sunken Seas",
+        "set": "Sprightly Vonwacq",
         "pieces": "2PC"
       },
       {
@@ -4223,23 +4136,11 @@
     ],
     "ornaments": [
       {
-        "set": "Talia: Kingdom of Banditry",
+        "set": "Subspace ASC Center",
         "pieces": "2PC"
       },
       {
-        "set": "Broken Keel",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Fleet of the Ageless",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Penacony, Land of the Dreams",
-        "pieces": "2PC"
-      },
-      {
-        "set": "Lushaka, the Sunken Seas",
+        "set": "Sprightly Vonwacq",
         "pieces": "2PC"
       },
       {
